@@ -1,9 +1,7 @@
 % \iffalse meta-comment -------------------------------------------------------
-% Copyright 2015 Matthias Vogelgesang and the LaTeX community. A full list of
-% contributors can be found at
-%
-%     https://github.com/matze/mtheme/graphs/contributors
-%
+% i4neo template 2017 by Bernhard Heinloth
+% based on the metropolis template by Matthias Vogelgesang et al.
+%     https://github.com/matze/mtheme/
 % and the original template was based on the HSRM theme by Benjamin Weiss.
 %
 % This work is licensed under a Creative Commons Attribution-ShareAlike 4.0
@@ -12,7 +10,7 @@
 % \iffalse
 %<*package>
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{beamerouterthememetropolis}[2017/01/23 Metropolis outer theme]
+\ProvidesPackage{beamerouterthemeneo}[2017/10/01 i4neo outer theme]
 %</package>
 % \fi
 % \CheckSum{0}
@@ -44,7 +42,7 @@
 %    Adds slide numbers to the bottom right of each slide.
 %    \begin{macrocode}
 \pgfkeys{
-  /metropolis/outer/numbering/.cd,
+  /neo/outer/numbering/.cd,
     .is choice,
     none/.code=\setbeamertemplate{frame numbering}[none],
     counter/.code=\setbeamertemplate{frame numbering}[counter],
@@ -57,24 +55,24 @@
 %    Adds a progress bar to the top, bottom, or frametitle of each slide.
 %    \begin{macrocode}
 \pgfkeys{
-  /metropolis/outer/progressbar/.cd,
+  /neo/outer/progressbar/.cd,
     .is choice,
     none/.code={%
       \setbeamertemplate{headline}[plain]
       \setbeamertemplate{frametitle}[plain]
       \setbeamertemplate{footline}[plain]
     },
-    head/.code={\pgfkeys{/metropolis/outer/progressbar=none}
+    head/.code={\pgfkeys{/neo/outer/progressbar=none}
       \addtobeamertemplate{headline}{}{%
         \usebeamertemplate*{progress bar in head/foot}
       }
     },
-    frametitle/.code={\pgfkeys{/metropolis/outer/progressbar=none}
+    frametitle/.code={\pgfkeys{/neo/outer/progressbar=none}
       \addtobeamertemplate{frametitle}{}{%
         \usebeamertemplate*{progress bar in head/foot}
       }
     },
-    foot/.code={\pgfkeys{/metropolis/outer/progressbar=none}
+    foot/.code={\pgfkeys{/neo/outer/progressbar=none}
       \addtobeamertemplate{footline}{}{%
         \usebeamertemplate*{progress bar in head/foot}%
       }
@@ -83,11 +81,11 @@
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\metropolis@outer@setdefaults}
+% \begin{macro}{\neo@outer@setdefaults}
 %    Sets default values for outer theme options.
 %    \begin{macrocode}
-\newcommand{\metropolis@outer@setdefaults}{
-  \pgfkeys{/metropolis/outer/.cd,
+\newcommand{\neo@outer@setdefaults}{
+  \pgfkeys{/neo/outer/.cd,
     numbering=counter,
     progressbar=none,
   }
@@ -148,30 +146,30 @@
 %    Templates for the frame title, which is optionally underlined with a
 %    progress bar.
 %    \begin{macrocode}
-\newlength{\metropolis@frametitle@padding}
-\setlength{\metropolis@frametitle@padding}{2.2ex}
-\newcommand{\metropolis@frametitlestrut@start}{
-  \rule{0pt}{\metropolis@frametitle@padding +%
+\newlength{\neo@frametitle@padding}
+\setlength{\neo@frametitle@padding}{2.2ex}
+\newcommand{\neo@frametitlestrut@start}{
+  \rule{0pt}{\neo@frametitle@padding +%
     \totalheightof{%
-      \ifcsdef{metropolis@frametitleformat}{\metropolis@frametitleformat X}{X}%
+      \ifcsdef{neo@frametitleformat}{\neo@frametitleformat X}{X}%
     }%
   }%
 }
-\newcommand{\metropolis@frametitlestrut@end}{
-  \rule[-\metropolis@frametitle@padding]{0pt}{\metropolis@frametitle@padding}
+\newcommand{\neo@frametitlestrut@end}{
+  \rule[-\neo@frametitle@padding]{0pt}{\neo@frametitle@padding}
 }
 \defbeamertemplate{frametitle}{plain}{%
   \nointerlineskip%
   \begin{beamercolorbox}[%
       wd=\paperwidth,%
       sep=0pt,%
-      leftskip=\metropolis@frametitle@padding,%
-      rightskip=\metropolis@frametitle@padding,%
+      leftskip=\neo@frametitle@padding,%
+      rightskip=\neo@frametitle@padding,%
     ]{frametitle}%
-  \metropolis@frametitlestrut@start%
+  \neo@frametitlestrut@start%
   \insertframetitle%
   \nolinebreak%
-  \metropolis@frametitlestrut@end%
+  \neo@frametitlestrut@end%
   \end{beamercolorbox}%
 }
 \setbeamertemplate{frametitle continuation}{%
@@ -186,19 +184,19 @@
 %    on each page. Much of this code is duplicated in the inner theme's
 %    template |progress bar in section page|.
 %    \begin{macrocode}
-\newlength{\metropolis@progressinheadfoot}
-\newlength{\metropolis@progressinheadfoot@linewidth}
-\setlength{\metropolis@progressinheadfoot@linewidth}{0.4pt}
+\newlength{\neo@progressinheadfoot}
+\newlength{\neo@progressinheadfoot@linewidth}
+\setlength{\neo@progressinheadfoot@linewidth}{0.4pt}
 \setbeamertemplate{progress bar in head/foot}{
   \nointerlineskip
-  \setlength{\metropolis@progressinheadfoot}{%
+  \setlength{\neo@progressinheadfoot}{%
     \paperwidth * \ratio{\insertframenumber pt}{\inserttotalframenumber pt}%
   }%
   \begin{beamercolorbox}[wd=\paperwidth]{progress bar in head/foot}
     \tikzexternaldisable%
     \begin{tikzpicture}
-      \fill[bg] (0,0) rectangle (\paperwidth, \metropolis@progressinheadfoot@linewidth);
-      \fill[fg] (0,0) rectangle (\metropolis@progressinheadfoot, \metropolis@progressinheadfoot@linewidth);
+      \fill[bg] (0,0) rectangle (\paperwidth, \neo@progressinheadfoot@linewidth);
+      \fill[fg] (0,0) rectangle (\neo@progressinheadfoot, \neo@progressinheadfoot@linewidth);
     \end{tikzpicture}%
     \tikzexternalenable%
   \end{beamercolorbox}
@@ -217,7 +215,7 @@
 \AtBeginDocument{%
   \apptocmd{\appendix}{%
     \pgfkeys{%
-      /metropolis/outer/.cd,
+      /neo/outer/.cd,
       numbering=none,
       progressbar=none}
     }{}{}
@@ -227,8 +225,8 @@
 % \subsubsection{Process package options}
 %
 %    \begin{macrocode}
-\metropolis@outer@setdefaults
-\ProcessPgfPackageOptions{/metropolis/outer}
+\neo@outer@setdefaults
+\ProcessPgfPackageOptions{/neo/outer}
 %    \end{macrocode}
 %
 % \iffalse

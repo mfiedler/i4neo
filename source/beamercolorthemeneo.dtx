@@ -1,9 +1,7 @@
 % \iffalse meta-comment -------------------------------------------------------
-% Copyright 2015 Matthias Vogelgesang and the LaTeX community. A full list of
-% contributors can be found at
-%
-%     https://github.com/matze/mtheme/graphs/contributors
-%
+% i4neo template 2017 by Bernhard Heinloth
+% based on the Metropolis template by Matthias Vogelgesang et al.
+%     https://github.com/matze/mtheme/
 % and the original template was based on the HSRM theme by Benjamin Weiss.
 %
 % This work is licensed under a Creative Commons Attribution-ShareAlike 4.0
@@ -12,7 +10,7 @@
 % \iffalse
 %<*package>
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{beamercolorthememetropolis}[2017/01/23 Metropolis color theme]
+\ProvidesPackage{beamercolorthemeneo}[2017/10/01 i4neo color theme]
 %</package>
 % \fi
 % \CheckSum{0}
@@ -39,10 +37,10 @@
 %    |theorem| and |example|.
 %    \begin{macrocode}
 \pgfkeys{
-  /metropolis/color/block/.cd,
+  /neo/color/block/.cd,
     .is choice,
-    transparent/.code=\metropolis@block@transparent,
-    fill/.code=\metropolis@block@fill,
+    transparent/.code=\neo@block@transparent,
+    fill/.code=\neo@block@fill,
 }
 %    \end{macrocode}
 % \end{macro}
@@ -52,19 +50,19 @@
 %    of the reverse.
 %    \begin{macrocode}
 \pgfkeys{
-  /metropolis/color/background/.cd,
+  /neo/color/background/.cd,
     .is choice,
-    dark/.code=\metropolis@colors@dark,
-    light/.code=\metropolis@colors@light,
+    dark/.code=\neo@colors@dark,
+    light/.code=\neo@colors@light,
 }
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\metropolis@color@setdefaults}
+% \begin{macro}{\neo@color@setdefaults}
 %    Sets default values for color theme options.
 %    \begin{macrocode}
-\newcommand{\metropolis@color@setdefaults}{
-  \pgfkeys{/metropolis/color/.cd,
+\newcommand{\neo@color@setdefaults}{
+  \pgfkeys{/neo/color/.cd,
     background=light,
     block=transparent,
   }
@@ -77,10 +75,10 @@
 % \subsubsection{Base colors}
 %
 %    \begin{macrocode}
-\definecolor{mDarkBrown}{HTML}{604c38}
-\definecolor{mDarkTeal}{HTML}{23373b}
-\definecolor{mLightBrown}{HTML}{EB811B}
-\definecolor{mLightGreen}{HTML}{14B03D}
+\definecolor{nDarkBrown}{HTML}{604c38}
+\definecolor{nDarkTeal}{HTML}{23373b}
+\definecolor{nLightBrown}{HTML}{EB811B}
+\definecolor{nLightGreen}{HTML}{14B03D}
 %    \end{macrocode}
 %
 %
@@ -91,24 +89,24 @@
 % |alerted text|, and |example text|.
 %
 %    \begin{macrocode}
-\newcommand{\metropolis@colors@dark}{
+\newcommand{\neo@colors@dark}{
   \setbeamercolor{normal text}{%
     fg=black!2,
-    bg=mDarkTeal
+    bg=nDarkTeal
   }
   \usebeamercolor[fg]{normal text}
 }
-\newcommand{\metropolis@colors@light}{
+\newcommand{\neo@colors@light}{
   \setbeamercolor{normal text}{%
-    fg=mDarkTeal,
+    fg=nDarkTeal,
     bg=black!2
   }
 }
 \setbeamercolor{alerted text}{%
-  fg=mLightBrown
+  fg=nLightBrown
 }
 \setbeamercolor{example text}{%
-  fg=mLightGreen
+  fg=nLightGreen
 }
 %    \end{macrocode}
 %
@@ -179,7 +177,7 @@
 % if changing colors mid-presentation.
 %
 %    \begin{macrocode}
-\newcommand{\metropolis@block@transparent}{
+\newcommand{\neo@block@transparent}{
   \setbeamercolor{block title}{%
     use=normal text,
     fg=normal text.fg,
@@ -189,7 +187,7 @@
     bg=
   }
 }
-\newcommand{\metropolis@block@fill}{
+\newcommand{\neo@block@fill}{
   \setbeamercolor{block title}{%
     use=normal text,
     fg=normal text.fg,
@@ -237,8 +235,8 @@
 % \subsubsection{Process package options}
 %
 %    \begin{macrocode}
-\metropolis@color@setdefaults
-\ProcessPgfPackageOptions{/metropolis/color}
+\neo@color@setdefaults
+\ProcessPgfPackageOptions{/neo/color}
 %    \end{macrocode}
 %
 %    \begin{macrocode}

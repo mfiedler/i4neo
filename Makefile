@@ -1,26 +1,23 @@
 MAKEFLAGS  := -j 1
-INS         = source/beamerthememetropolis.ins
+INS         = source/beamerthemeneo.ins
 PACKAGE_SRC = $(wildcard source/*.dtx)
 PACKAGE_STY = $(notdir $(PACKAGE_SRC:%.dtx=%.sty))
 DEMO_SRC    = demo/demo.tex demo/demo.bib
 DEMO_PDF    = demo/demo.pdf
-DOC_SRC     = doc/metropolistheme.dtx
-DOC_PDF     = doc/metropolistheme.pdf
+DOC_SRC     = doc/neotheme.dtx
+DOC_PDF     = doc/neotheme.pdf
 
 CTAN_CONTENT = README.md $(INS) $(PACKAGE_SRC) $(DOC_SRC) $(DOC_PDF) $(DEMO_SRC) $(DEMO_PDF)
 
 DESTDIR     ?= $(shell kpsewhich -var-value=TEXMFHOME)
-INSTALL_DIR  = $(DESTDIR)/tex/latex/metropolis
-DOC_DIR      = $(DESTDIR)/doc/latex/metropolis
+INSTALL_DIR  = $(DESTDIR)/tex/latex/neo
+DOC_DIR      = $(DESTDIR)/doc/latex/neo
 CACHE_DIR   := $(shell pwd)/.latex-cache
 
 COMPILE_TEX := latexmk -xelatex -output-directory=$(CACHE_DIR)
 export TEXINPUTS:=$(shell pwd):$(shell pwd)/source:${TEXINPUTS}
 
-DOCKER_IMAGE = latex-image
-DOCKER_CONTAINER = latex-container
-
-.PHONY: all sty doc demo clean install uninstall ctan clean-cache clean-sty ctan-version docker-run docker-build docker-rm
+.PHONY: all sty doc demo clean install uninstall clean-cache clean-sty
 
 all: sty doc
 
@@ -50,12 +47,6 @@ clean-cache:
 clean-sty:
 	@rm -f $(PACKAGE_STY)
 
-ctan: $(CTAN_CONTENT) ctan-version
-	@tar --transform "s@\(.*\)@metropolis/\1@" -cf metropolis-$(shell date "+%Y-%m-%d").tar.gz $(CTAN_CONTENT)
-
-ctan-version:
-	@sed -i 's@20[0-9][0-9]/[0-9]*/[0-9]*@$(shell date "+%Y/%m/%d")@' $(PACKAGE_SRC)
-
 $(CACHE_DIR):
 	@mkdir -p $(CACHE_DIR)
 
@@ -70,12 +61,3 @@ $(DOC_PDF): $(DOC_SRC) $(PACKAGE_STY) | clean-cache $(CACHE_DIR)
 $(DEMO_PDF): $(DEMO_SRC) $(PACKAGE_STY) | clean-cache $(CACHE_DIR)
 	@cd $(dir $(DEMO_SRC)) && $(COMPILE_TEX) $(notdir $(DEMO_SRC))
 	@cp $(CACHE_DIR)/$(notdir $(DEMO_PDF)) $(DEMO_PDF)
-
-docker-run: docker-build
-	docker run --rm=true --name $(DOCKER_CONTAINER) -i -t -v `pwd`:/data $(DOCKER_IMAGE) make
-
-docker-build:
-	docker build -t $(DOCKER_IMAGE) .
-
-docker-rm:
-	docker rm $(DOCKER_CONTAINER)

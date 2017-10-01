@@ -100,8 +100,7 @@
 % space on the title slide.
 %    \begin{macrocode}
 \setbeamertemplate{title page}{
-  \begin{minipage}[b][\paperheight]{\textwidth}
-    \ifx\inserttitlegraphic\@empty\else\usebeamertemplate*{title graphic}\fi
+  \begin{minipage}[b][0.95\paperheight]{\textwidth}
     \vfill%
     \ifx\inserttitle\@empty\else\usebeamertemplate*{title}\fi
     \ifx\insertsubtitle\@empty\else\usebeamertemplate*{subtitle}\fi
@@ -115,11 +114,13 @@
 % Stack Exchange question}.
 %
 %    \begin{macrocode}
-    \ifx\beamer@shortauthor\@empty\else\usebeamertemplate*{author}\fi
     \ifx\insertdate\@empty\else\usebeamertemplate*{date}\fi
+    \ifx\beamer@shortauthor\@empty\else\usebeamertemplate*{author}\fi
     \ifx\insertinstitute\@empty\else\usebeamertemplate*{institute}\fi
     \vfill
-    \vspace*{1mm}
+    \begin{minipage}[b][0.25\paperheight][t]{\textwidth}
+      \ifx\inserttitlegraphic\@empty\else\usebeamertemplate*{title graphic}\fi
+    \end{minipage}
   \end{minipage}
 }
 %    \end{macrocode}
@@ -129,6 +130,9 @@
 % |title page| beamer template directly. Beamer already defines these macros,
 % but we patch them here to make the title page |[plain]| by default, remove
 % |\@thanks|, and ensure the title frame number doesn't count.
+% In addition, |\maketitle| used outside of a frame will load a predefined
+% background image, which can be changed using the optional argument:
+%     |\maketitle{extern}| for images/titlepage-extern.pdf
 %
 % \begin{macro}{\maketitle}
 % \begin{macro}{\titlepage}
@@ -137,11 +141,21 @@
 %   |title page| template.
 %
 %    \begin{macrocode}
-\def\maketitle{%
+\renewcommand{\maketitle}[1][extern]{%
   \ifbeamer@inframe
     \titlepage
   \else
-    \frame[plain,noframenumbering]{\titlepage}
+    {
+      \usebackgroundtemplate{\includegraphics[width=\paperwidth]{images/titlepage-#1}}
+      \frame[plain,noframenumbering]{
+        \neo@colors@dark
+        \setbeamercolor{title separator}{
+  fg=black!20,
+  bg=normal text.fg
+}
+        \titlepage
+      }
+    }
   \fi
 }
 \def\titlepage{%

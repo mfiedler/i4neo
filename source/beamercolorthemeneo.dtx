@@ -75,10 +75,49 @@
 % \subsubsection{Base colors}
 %
 %    \begin{macrocode}
-\definecolor{nDarkBrown}{HTML}{604c38}
-\definecolor{nDarkTeal}{HTML}{23373b}
-\definecolor{nLightBrown}{HTML}{EB811B}
-\definecolor{nLightGreen}{HTML}{14B03D}
+
+%i4wiki
+%\definecolor{nDarkBlue}{HTML}{011F32}
+%\definecolor{nDarkerBlue}{HTML}{1b3342}
+%\definecolor{nBlue}{HTML}{06426a}
+%\definecolor{nLighterBlue}{HTML}{5aa7da}
+%\definecolor{nLightBlue}{HTML}{97bfda}
+%
+%\definecolor{nDarkGrey}{HTML}{f4f4f4}
+%\definecolor{nGrey}{HTML}{d4d3d3}
+%\definecolor{nLightGrey}{HTML}{858484}
+%
+%\definecolor{nDarkRed}{HTML}{4a000c}
+%\definecolor{nDarkerRed}{HTML}{62252e}
+%\definecolor{nRed}{HTML}{9c001a}
+%\definecolor{nLighterRed}{HTML}{e6566d}
+%\definecolor{nLightRed}{HTML}{e69ba7}
+%
+%\definecolor{nDarkYellow}{HTML}{4e2c00}
+%\definecolor{nDarkerYellow}{HTML}{674b27}
+%\definecolor{nYellow}{HTML}{a55c00}
+%\definecolor{nLighterYellow}{HTML}{e9a857}
+%\definecolor{nLightYellow}{HTML}{e9c79d}
+
+
+\definecolor{nDarkYellow}{RGB}{201,147,19}
+\definecolor{nYellow}{RGB}{217,198,137}
+\definecolor{nLightYellow}{RGB}{243,238,223}
+
+\definecolor{nDarkRed}{RGB}{141,20,41}
+\definecolor{nRed}{RGB}{201,169,147}
+\definecolor{nLightRed}{RGB}{237,231,222}
+
+\definecolor{nDarkBlue}{RGB}{0,56,101}
+\definecolor{nBlue}{RGB}{144,167,198}
+\definecolor{nLightBlue}{RGB}{221,229,240}
+
+\definecolor{nDarkGrey}{RGB}{152,164,174}
+\definecolor{nGrey}{RGB}{210,213,215}
+\definecolor{nLightGrey}{RGB}{235,236,238}
+
+\definecolor{nBlack}{HTML}{011F32}
+
 %    \end{macrocode}
 %
 %
@@ -92,21 +131,21 @@
 \newcommand{\neo@colors@dark}{
   \setbeamercolor{normal text}{%
     fg=black!2,
-    bg=nDarkTeal
+    bg=nBlack
   }
   \usebeamercolor[fg]{normal text}
 }
 \newcommand{\neo@colors@light}{
   \setbeamercolor{normal text}{%
-    fg=nDarkTeal,
+    fg=nBlack,
     bg=black!2
   }
 }
 \setbeamercolor{alerted text}{%
-  fg=nLightBrown
+  fg=nDarkRed
 }
 \setbeamercolor{example text}{%
-  fg=nLightGreen
+  fg=nDarkYellow
 }
 %    \end{macrocode}
 %
@@ -136,7 +175,7 @@
 \setbeamercolor{palette primary}{%
   use=normal text,
   fg=normal text.bg,
-  bg=normal text.fg
+  bg=nDarkBlue
 }
 \setbeamercolor{frametitle}{%
   use=palette primary,
@@ -152,16 +191,17 @@
 %
 %    \begin{macrocode}
 \setbeamercolor{progress bar}{%
-  use=alerted text,
-  fg=alerted text.fg,
-  bg=alerted text.fg!50!black!30
+  use=normal text,
+  fg=nDarkBlue,
+  bg=nLightBlue
 }
 \setbeamercolor{title separator}{
   use=progress bar,
   parent=progress bar
 }
 \setbeamercolor{progress bar in head/foot}{%
-  use=progress bar,
+  use=normal text.fg,
+  fg=nBlack,
   parent=progress bar
 }
 \setbeamercolor{progress bar in section page}{
@@ -180,36 +220,63 @@
 \newcommand{\neo@block@transparent}{
   \setbeamercolor{block title}{%
     use=normal text,
-    fg=normal text.fg,
+    fg=nDarkBlue,
     bg=
+  }
+  \setbeamercolor{block title alerted}{%
+    use={block title, alerted text},
+    bg=block title.bg,
+    fg=alerted text.fg
+  }
+  \setbeamercolor{block title example}{%
+    use={block title, example text},
+    bg=block title.bg,
+    fg=example text.fg
   }
   \setbeamercolor{block body}{
     bg=
+  }
+  \setbeamercolor{block body alerted}{
+    use=block body,
+    parent=block body
+  }
+  \setbeamercolor{block body example}{
+    use=block body,
+    parent=block body
   }
 }
 \newcommand{\neo@block@fill}{
   \setbeamercolor{block title}{%
     use=normal text,
-    fg=normal text.fg,
-    bg=normal text.bg!80!fg
+    fg=nDarkBlue,
+    bg=nGrey
+  }
+  \setbeamercolor{block title alerted}{%
+    use={block title, alerted text},
+    bg=alerted text.fg,
+    fg=alerted text.bg
+  }
+  \setbeamercolor{block title example}{%
+    use={block title, example text},
+    bg=example text.fg,
+    fg=example text.bg
   }
   \setbeamercolor{block body}{
     use={block title, normal text},
-    bg=block title.bg!50!normal text.bg
+    bg=nLightGrey
+  }
+  \setbeamercolor{block body alerted}{
+    use=block body,
+    parent=block body,
+    bg=nRed!50,
+  }
+  \setbeamercolor{block body example}{
+    use=block body,
+    parent=block body,
+    bg=nYellow!50
   }
 }
-\setbeamercolor{block title alerted}{%
-    use={block title, alerted text},
-    bg=block title.bg,
-    fg=alerted text.fg
-}
-\setbeamercolor{block title example}{%
-    use={block title, example text},
-    bg=block title.bg,
-    fg=example text.fg
-}
-\setbeamercolor{block body alerted}{use=block body, parent=block body}
-\setbeamercolor{block body example}{use=block body, parent=block body}
+
 %    \end{macrocode}
 %
 % Footnotes

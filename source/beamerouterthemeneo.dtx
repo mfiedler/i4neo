@@ -38,6 +38,19 @@
 %
 % \subsubsection{Options}
 %
+% \begin{macro}{icon}
+%    Adds an icon to the frametitle on each slide.
+%    \begin{macrocode}
+\pgfkeys{
+  /neo/outer/frametitle icon/.cd,
+    .is choice,
+    none/.code=\setbeamertemplate{frametitle icon}[none],
+    i4/.code=\setbeamertemplate{frametitle icon}[i4],
+    fau/.code=\setbeamertemplate{frametitle icon}[fau],
+}
+%    \end{macrocode}
+% \end{macro}
+%
 % \begin{macro}{numbering}
 %    Adds slide numbers to the bottom right of each slide.
 %    \begin{macrocode}
@@ -86,6 +99,7 @@
 %    \begin{macrocode}
 \newcommand{\neo@outer@setdefaults}{
   \pgfkeys{/neo/outer/.cd,
+    frametitle icon=none,
     numbering=counter,
     progressbar=frametitle,
   }
@@ -102,6 +116,14 @@
 %
 %    \begin{macrocode}
 \setbeamertemplate{navigation symbols}{}
+%    \end{macrocode}
+%
+% \begin{macro}{frametitle icon}
+%    Templates for the icon on the right of the frame title.
+%    \begin{macrocode}
+\defbeamertemplate{frametitle icon}{none}{}
+\defbeamertemplate{frametitle icon}{i4}{ \hfill\raisebox{-.25\height}{\includegraphics[height=1.2em]{images/logo-i4-white}}}
+\defbeamertemplate{frametitle icon}{fau}{ \hfill\raisebox{-.25\height}{\includegraphics[height=1.2em]{images/logo-fau-white}}}
 %    \end{macrocode}
 %
 % \begin{macro}{frame numbering}
@@ -168,6 +190,7 @@
     ]{frametitle}%
   \neo@frametitlestrut@start%
   \insertframetitle%
+  \usebeamertemplate*{frametitle icon}%
   \nolinebreak%
   \neo@frametitlestrut@end%
   \end{beamercolorbox}%
@@ -186,7 +209,7 @@
 %    \begin{macrocode}
 \newlength{\neo@progressinheadfoot}
 \newlength{\neo@progressinheadfoot@linewidth}
-\setlength{\neo@progressinheadfoot@linewidth}{0.4pt}
+\setlength{\neo@progressinheadfoot@linewidth}{0.8pt}
 \setbeamertemplate{progress bar in head/foot}{
   \nointerlineskip
   \setlength{\neo@progressinheadfoot}{%

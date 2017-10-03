@@ -100,18 +100,18 @@
 %    \end{macrocode}
 % \end{macro}
 %
-% For backwards compatibility with earlier betas of the theme, we implement
-% deprecated option names as aliases to the corresponding |key=value| options.
+% Shortcut option names as aliases to the corresponding |key=value| options.
 %
 %    \begin{macrocode}
 \pgfkeys{/neo/.cd,
-  usetitleprogressbar/.code=\pgfkeysalso{outer/progressbar=frametitle},
   noslidenumbers/.code=\pgfkeysalso{outer/numbering=none},
   usetotalslideindicator/.code=\pgfkeysalso{outer/numbering=fraction},
   nosectionslide/.code=\pgfkeysalso{inner/sectionpage=none},
   darkcolors/.code=\pgfkeysalso{color/background=dark},
   blockbg/.code=\pgfkeysalso{color/block=fill, inner/block=fill},
   light/.code=\pgfkeysalso{font/style=light},
+  book/.code=\pgfkeysalso{font/style=book},
+  regular/.code=\pgfkeysalso{font/style=regular},
 }
 %    \end{macrocode}
 %

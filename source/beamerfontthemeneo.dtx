@@ -51,16 +51,62 @@
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-  \setsansfont[Path = ../fonts/,%
-               ItalicFont= *-Italic,%
-               BoldFont=*-Bold,%
-               BoldItalicFont=*-BoldItalic,%
-               Extension = .otf]%
-              {FiraSansLight}%
-  \setmonofont[Path = ../fonts/,%
-               BoldFont=*-Medium,%
-               Extension = .otf]%
-              {FiraMono}%
+  \IfFileExists{xFiraSans.sty}{
+    \RequirePackage[T1]{fontenc}
+    \RequirePackage[sfdefault]{FiraSans}
+    \RequirePackage[nomap,lining]{FiraMono}
+    \defaultfontfeatures{
+          Scale     = 1.0,
+          Extension = .otf }
+  }{
+    \defaultfontfeatures{
+          Path = ../fonts/,
+          Scale     = 1.0,
+          Extension = .otf }
+  }
+  \setmonofont
+    [ Numbers = {Monospaced,Lining},
+      UprightFont    = *-Regular ,
+      ItalicFont     = *-Regular ,
+      BoldFont    = *-Medium ,
+      BoldItalicFont     = *-Medium ,
+    ]
+    {FiraMono}
+  \newcommand{\neo@fontsave}{
+    \let\firaneofamily\sfdefault  
+    \renewcommand*\familydefault{\firaneofamily}
+  }
+  \newcommand{\neo@fontlight}{
+    \setsansfont[
+        Numbers = {OldStyle, Monospaced},
+        UprightFont    = *-Light ,
+        ItalicFont     = *-LightItalic ,
+        BoldFont    = *-Regular ,
+        BoldItalicFont     = *-RegularItalic ,
+      ]{FiraSans}
+    \neo@fontsave
+  }
+  \newcommand{\neo@fontbook}{
+    \setsansfont[
+        Numbers = {OldStyle, Monospaced},
+        UprightFont    = *-Book ,
+        ItalicFont     = *-BookItalic ,
+        BoldFont    = *-Medium ,
+        BoldItalicFont     = *-MediumItalic ,
+      ]{FiraSans}
+    \neo@fontsave
+  }
+  \newcommand{\neo@fontregular}{
+    \setsansfont[
+        Numbers = {OldStyle, Monospaced},
+        UprightFont    = *-Regular ,
+        ItalicFont     = *-RegularItalic ,
+        BoldFont    = *-SemiBold ,
+        BoldItalicFont     = *-SemiBoldItalic ,
+      ]{FiraSans}
+    \neo@fontsave
+  }
+
   \AtBeginEnvironment{tabular}{%
     \addfontfeature{Numbers={Monospaced}}%
   }
@@ -69,19 +115,26 @@
   \IfFileExists{FiraSans.sty}{
     \RequirePackage[T1]{fontenc}
     \RequirePackage[sfdefault]{FiraSans}
-    \RequirePackage[nomap]{FiraMono}
+    \RequirePackage[nomap,lining]{FiraMono}
     \def\bfseries@tt{mb}
+    \newcommand{\neo@fontsave}{
+      \edef\familydefault{\sfdefault}
+      \edef\seriesdefault{\mdseries@sf}
+    }
     \newcommand{\neo@fontlight}{
       \def\mdseries@sf{l}
       \def\bfseries@sf{m}
-      \edef\familydefault{\sfdefault}
-      \edef\seriesdefault{\mdseries@sf}
+      \neo@fontsave
+    }
+    \newcommand{\neo@fontbook}{
+      \def\mdseries@sf{k}
+      \def\bfseries@sf{mb}
+      \neo@fontsave
     }
     \newcommand{\neo@fontregular}{
       \def\mdseries@sf{m}
       \def\bfseries@sf{sb}
-      \edef\familydefault{\sfdefault}
-      \edef\seriesdefault{\mdseries@sf}
+      \neo@fontsave
     }
   }{
     \PackageWarning{beamerthemeneo}{%
@@ -139,6 +192,7 @@
   /neo/font/style/.cd,
     .is choice,
     light/.code={\neo@fontlight},
+    book/.code={\neo@fontbook},
     regular/.code={\neo@fontregular},
 }
 %    \end{macrocode}
@@ -294,7 +348,7 @@
 %    \begin{macrocode}
 \newcommand{\neo@font@setdefaults}{
   \pgfkeys{/neo/font/.cd,
-    style=regular,
+    style=book,
     titleformat title=regular,
     titleformat subtitle=regular,
     titleformat section=regular,

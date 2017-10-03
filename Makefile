@@ -1,5 +1,5 @@
 LOCAL_DIR   = $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
-PACKAGE_DIR = $(LOCAL_DIR)/source
+PACKAGE_DIR = $(LOCAL_DIR)/beamertheme-source
 DOC_DIR     = $(LOCAL_DIR)/doc
 DEMO_DIR    = $(LOCAL_DIR)/demo
 CACHE_DIR   = $(LOCAL_DIR)/.latex-cache
@@ -11,14 +11,13 @@ DOC_PDF     = $(patsubst %.tex,%.pdf,$(wildcard $(DOC_DIR)/*.tex))
 
 DEMO_PDF    = $(patsubst %.tex,%.pdf,$(patsubst %.md,%.pdf, $(wildcard $(DEMO_DIR)/*.tex) $(wildcard $(DEMO_DIR)/*.md)))
 
-
 COMPILE_TEX := latexmk -xelatex -output-directory=$(CACHE_DIR)
 
 export TEXINPUTS:=$(LOCAL_DIR):$(shell pwd):$(PACKAGE_DIR):${TEXINPUTS}
 
-.PHONY: all sty doc demo clean install uninstall clean-cache clean-sty
+.PHONY: all sty doc demo clean mrproper
 
-all: sty doc
+all: sty demo doc
 
 sty: $(PACKAGE_STY)
 

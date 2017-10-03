@@ -29,6 +29,8 @@ of your TeX distribution. Metropolis is on [CTAN][] since December
 Installing Metropolis from source, like any Beamer theme, involves four easy
 steps:
 
+0. **Get the font** [Fira](https://github.com/mozilla/Fira) (unless it is shipped with this repo)
+
 1. **Download the source** with a `git clone` of the [Metropolis repository](https://github.com/matze/mtheme) or as a [zip archive](https://github.com/matze/mtheme/archive/master.zip) of the latest development version.
 
 2. **Compile the style files** by running `make sty` inside the downloaded

@@ -51,25 +51,42 @@
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-  \IfFileExists{xFiraSans.sty}{
+  \IfFileExists{FiraSans.sty}{
     \RequirePackage[T1]{fontenc}
     \RequirePackage[sfdefault]{FiraSans}
     \RequirePackage[nomap,lining]{FiraMono}
     \defaultfontfeatures{
           Scale     = 1.0,
-          Extension = .otf }
+          Extension = .otf
+    }
   }{
-    \defaultfontfeatures{
-          Path = ../fonts/,
-          Scale     = 1.0,
-          Extension = .otf }
+    \IfFileExists{./fonts/FiraSans-Regular.otf}{
+      \defaultfontfeatures{
+            Path = ./fonts/,
+            Scale     = 1.0,
+            Extension = .otf
+      }
+    }{
+      \IfFileExists{../fonts/FiraSans-Regular.otf}{
+        \defaultfontfeatures{
+              Path = ../fonts/,
+              Scale     = 1.0,
+              Extension = .otf
+        }
+      }{
+        \PackageWarning{beamerthemeneo}{%
+          Neither Fire Package nor Package fonts directory found - %
+          using system fonts. You need to have to fonts installed.%
+        }
+      }
+    }
   }
   \setmonofont
     [ Numbers = {Monospaced,Lining},
       UprightFont    = *-Regular ,
       ItalicFont     = *-Regular ,
-      BoldFont    = *-Medium ,
-      BoldItalicFont     = *-Medium ,
+      BoldFont       = *-Medium ,
+      BoldItalicFont = *-Medium ,
     ]
     {FiraMono}
   \newcommand{\neo@fontsave}{
@@ -81,8 +98,8 @@
         Numbers = {OldStyle, Monospaced},
         UprightFont    = *-Light ,
         ItalicFont     = *-LightItalic ,
-        BoldFont    = *-Regular ,
-        BoldItalicFont     = *-RegularItalic ,
+        BoldFont       = *-Regular ,
+        BoldItalicFont = *-RegularItalic ,
       ]{FiraSans}
     \neo@fontsave
   }
@@ -91,8 +108,8 @@
         Numbers = {OldStyle, Monospaced},
         UprightFont    = *-Book ,
         ItalicFont     = *-BookItalic ,
-        BoldFont    = *-Medium ,
-        BoldItalicFont     = *-MediumItalic ,
+        BoldFont       = *-Medium ,
+        BoldItalicFont = *-MediumItalic ,
       ]{FiraSans}
     \neo@fontsave
   }
@@ -101,8 +118,8 @@
         Numbers = {OldStyle, Monospaced},
         UprightFont    = *-Regular ,
         ItalicFont     = *-RegularItalic ,
-        BoldFont    = *-SemiBold ,
-        BoldItalicFont     = *-SemiBoldItalic ,
+        BoldFont       = *-SemiBold ,
+        BoldItalicFont = *-SemiBoldItalic ,
       ]{FiraSans}
     \neo@fontsave
   }
@@ -139,7 +156,7 @@
   }{
     \PackageWarning{beamerthemeneo}{%
       You need to install the Fira Fonts package or compile with XeLaTeX or %
-      LuaLaTeX to use the Fira fonts%
+      LuaLaTeX to use the included Fira fonts%
     }
   }
 }

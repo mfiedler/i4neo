@@ -1,21 +1,20 @@
-MAKEFLAGS  := -j 1
-INS         = source/beamerthemeneo.ins
-PACKAGE_SRC = $(wildcard source/*.dtx)
+LOCAL_DIR   = $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
+PACKAGE_DIR = $(LOCAL_DIR)/source
+DOC_DIR     = $(LOCAL_DIR)/doc
+DEMO_DIR    = $(LOCAL_DIR)/demo
+CACHE_DIR   = $(LOCAL_DIR)/.latex-cache
+
+PACKAGE_SRC = $(wildcard $(PACKAGE_DIR)/*.dtx)
 PACKAGE_STY = $(notdir $(PACKAGE_SRC:%.dtx=%.sty))
-DEMO_SRC    = demo/demo.tex demo/demo.bib
-DEMO_PDF    = demo/demo.pdf
-DOC_SRC     = doc/neotheme.dtx
-DOC_PDF     = doc/neotheme.pdf
 
-CTAN_CONTENT = README.md $(INS) $(PACKAGE_SRC) $(DOC_SRC) $(DOC_PDF) $(DEMO_SRC) $(DEMO_PDF)
+DOC_PDF     = $(patsubst %.tex,%.pdf,$(wildcard $(DOC_DIR)/*.tex))
 
-DESTDIR     ?= $(shell kpsewhich -var-value=TEXMFHOME)
-INSTALL_DIR  = $(DESTDIR)/tex/latex/neo
-DOC_DIR      = $(DESTDIR)/doc/latex/neo
-CACHE_DIR   := $(shell pwd)/.latex-cache
+DEMO_PDF    = $(patsubst %.tex,%.pdf,$(patsubst %.md,%.pdf, $(wildcard $(DEMO_DIR)/*.tex) $(wildcard $(DEMO_DIR)/*.md)))
+
 
 COMPILE_TEX := latexmk -xelatex -output-directory=$(CACHE_DIR)
-export TEXINPUTS:=$(shell pwd):$(shell pwd)/source:${TEXINPUTS}
+
+export TEXINPUTS:=$(LOCAL_DIR):$(shell pwd):$(PACKAGE_DIR):${TEXINPUTS}
 
 .PHONY: all sty doc demo clean install uninstall clean-cache clean-sty
 
@@ -27,37 +26,18 @@ doc: $(DOC_PDF)
 
 demo: $(DEMO_PDF)
 
-clean: clean-cache clean-sty
-
-install: $(PACKAGE_STY) $(DOC_PDF)
-	@mkdir -p $(INSTALL_DIR)
-	@cp $(PACKAGE_STY) $(INSTALL_DIR)
-	@mkdir -p $(DOC_DIR)
-	@cp $(DOC_PDF) $(DOC_DIR)
-
-uninstall:
-	@rm -f "$(addprefix $(INSTALL_DIR)/, $(PACKAGE_STY))"
-	@rmdir "$(INSTALL_DIR)"
-	@rm -f "$(DOC_DIR)/$(notdir $(DOC_PDF))"
-	@rmdir "$(DOC_DIR)"
-
-clean-cache:
+clean:
 	@rm -rf "$(CACHE_DIR)"
 
-clean-sty:
-	@rm -f $(PACKAGE_STY)
+mrproper: clean
+	@rm -f $(PACKAGE_STY) $(DEMO_PDF) $(DOC_PDF)
 
-$(CACHE_DIR):
+$(PACKAGE_STY): $(wildcard $(PACKAGE_DIR)/*.ins) $(PACKAGE_SRC)
 	@mkdir -p $(CACHE_DIR)
-
-$(PACKAGE_STY): $(PACKAGE_SRC) $(INS) | clean-cache $(CACHE_DIR)
-	@cd $(dir $(INS)) && latex -output-directory=$(CACHE_DIR) $(notdir $(INS))
+	@cd $(PACKAGE_DIR) && latex -output-directory=$(CACHE_DIR) $(notdir $<)
 	@cp $(addprefix $(CACHE_DIR)/,$(PACKAGE_STY)) .
 
-$(DOC_PDF): $(DOC_SRC) $(PACKAGE_STY) | clean-cache $(CACHE_DIR)
-	@cd $(dir $(DOC_SRC)) && $(COMPILE_TEX) $(notdir $(DOC_SRC))
-	@cp $(CACHE_DIR)/$(notdir $(DOC_PDF)) $(DOC_PDF)
-
-$(DEMO_PDF): $(DEMO_SRC) $(PACKAGE_STY) | clean-cache $(CACHE_DIR)
-	@cd $(dir $(DEMO_SRC)) && $(COMPILE_TEX) $(notdir $(DEMO_SRC))
-	@cp $(CACHE_DIR)/$(notdir $(DEMO_PDF)) $(DEMO_PDF)
+%.pdf: %.tex  $(wildcard *.bib) $(PACKAGE_STY)
+	@mkdir -p $(CACHE_DIR)
+	@cd $(dir $< ) && $(COMPILE_TEX) $(notdir $<)
+	@cp $(CACHE_DIR)/$(notdir $@) $@

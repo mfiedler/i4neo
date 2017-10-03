@@ -50,88 +50,44 @@
   }
 %    \end{macrocode}
 %
-% \begin{macro}{\checkfont}
-%    Checks if a font is installed; if not, |fontsnotfound| is increased.
 %    \begin{macrocode}
-  \newcounter{fontsnotfound}
-  \newcommand{\checkfont}[1]{%
-    \suppressfontnotfounderror=1%
-    \font\x = "#1" at 10pt
-    \selectfont
-    \ifx\x\nullfont%
-      \stepcounter{fontsnotfound}%
-    \fi%
-    \suppressfontnotfounderror=0%
-  }
-
-%    \end{macrocode}
-% \end{macro}
-%
-% \begin{macro}{\iffontsavailable}
-%    Resets the |fontsnotfound| counter and calls |\checkfont| for each font in
-%    the comma separated list in the first argument.
-%    \begin{macrocode}
-  \newcommand{\iffontsavailable}[3]{%
-    \setcounter{fontsnotfound}{0}%
-    \expandafter\forcsvlist\expandafter%
-    \checkfont\expandafter{#1}%
-    \ifnum\value{fontsnotfound}=0%
-      #2%
-    \else%
-      #3%
-    \fi%
-  }
-%    \end{macrocode}
-% \end{macro}
-%
-% We search for regular, italic, light, light italic, mono, and mono bold
-% fonts under the default |Fira Sans| and |Fira Mono| names. If this fails,
-% the suffix OT --- used by some Linux distributions --- will be tried. If this
-% also fails, a warning will be displayed and the standard fonts will be used.
-%
-%    \begin{macrocode}
-  \iffontsavailable{Fira Sans Light,%
-                    Fira Sans Light Italic,%
-                    Fira Sans,%
-                    Fira Sans Italic}%
-  {%
-    \setsansfont[ItalicFont={Fira Sans Light Italic},%
-                 BoldFont={Fira Sans},%
-                 BoldItalicFont={Fira Sans Italic}]%
-                {Fira Sans Light}%
-  }{%
-    \iffontsavailable{Fira Sans Light OT,%
-                      Fira Sans Light Italic OT,%
-                      Fira Sans OT,%
-                      Fira Sans Italic OT}%
-    {%
-      \setsansfont[ItalicFont={Fira Sans Light Italic OT},%
-                   BoldFont={Fira Sans OT},%
-                   BoldItalicFont={Fira Sans Italic OT}]%
-                  {Fira Sans Light OT}%
-    }{%
-      \PackageWarning{beamerthemeneo}{%
-        Could not find Fira Sans fonts%
-      }
-    }
-  }
-  \iffontsavailable{Fira Mono, Fira Mono Bold}{%
-    \setmonofont[BoldFont={Fira Mono Medium}]{Fira Mono}%
-  }{%
-    \iffontsavailable{Fira Mono OT, Fira Mono Bold OT}{%
-      \setmonofont[BoldFont={Fira Mono Medium OT}]{Fira Mono OT}%
-    }{%
-      \PackageWarning{beamerthemeneo}{%
-        Could not find Fira Mono fonts%
-      }
-    }
-  }
+  \setsansfont[Path = ../fonts/,%
+               ItalicFont= *-Italic,%
+               BoldFont=*-Bold,%
+               BoldItalicFont=*-BoldItalic,%
+               Extension = .otf]%
+              {FiraSansLight}%
+  \setmonofont[Path = ../fonts/,%
+               BoldFont=*-Medium,%
+               Extension = .otf]%
+              {FiraMono}%
   \AtBeginEnvironment{tabular}{%
     \addfontfeature{Numbers={Monospaced}}%
   }
 }{%
-  \PackageWarning{beamerthemeneo}{%
-    You need to compile with XeLaTeX or LuaLaTeX to use the Fira fonts%
+  \RequirePackage[utf8]{inputenc}
+  \IfFileExists{FiraSans.sty}{
+    \RequirePackage[T1]{fontenc}
+    \RequirePackage[sfdefault]{FiraSans}
+    \RequirePackage[nomap]{FiraMono}
+    \def\bfseries@tt{mb}
+    \newcommand{\neo@fontlight}{
+      \def\mdseries@sf{l}
+      \def\bfseries@sf{m}
+      \edef\familydefault{\sfdefault}
+      \edef\seriesdefault{\mdseries@sf}
+    }
+    \newcommand{\neo@fontregular}{
+      \def\mdseries@sf{m}
+      \def\bfseries@sf{sb}
+      \edef\familydefault{\sfdefault}
+      \edef\seriesdefault{\mdseries@sf}
+    }
+  }{
+    \PackageWarning{beamerthemeneo}{%
+      You need to install the Fira Fonts package or compile with XeLaTeX or %
+      LuaLaTeX to use the Fira fonts%
+    }
   }
 }
 %    \end{macrocode}
@@ -174,6 +130,19 @@
                          series=\bfseries}
 %    \end{macrocode}
 %
+% \subsubsection{Font style options}
+%
+% \begin{macro}{titleformat title}
+%    Controls the overall font style.
+%    \begin{macrocode}
+\pgfkeys{
+  /neo/font/style/.cd,
+    .is choice,
+    light/.code={\neo@fontlight},
+    regular/.code={\neo@fontregular},
+}
+%    \end{macrocode}
+% \end{macro}
 %
 %
 % \subsubsection{Title format options}
@@ -325,6 +294,7 @@
 %    \begin{macrocode}
 \newcommand{\neo@font@setdefaults}{
   \pgfkeys{/neo/font/.cd,
+    style=regular,
     titleformat title=regular,
     titleformat subtitle=regular,
     titleformat section=regular,

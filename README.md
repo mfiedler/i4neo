@@ -14,11 +14,11 @@ Die `STY`-Paketdateien können mittels
 erstellt werden und wie übliche Beamerthemes verwendet werden, jedoch beinhaltet das Makefile auch genug Magie um die komplette Erstellung zu übernehmen.
 Ebenfalls muss das Projekt nicht in dem Themeordner entwickelt werden, sondern kann als Unterordner im Präsentationsordner mit dem Befehl
 
-    git clone https://gitlab.cs.fau.de/heinloth/neo.git theme
+    git clone https://gitlab.cs.fau.de/i4/tex/i4neo.git theme
 
 geklont werden. Falls die Präsentation in GIT verwaltet wird, empfiehlt es sich als Untermodul eingebettet
 
-    git submodule add git@gitlab.cs.fau.de:heinloth/neo.git theme
+    git submodule add git@gitlab.cs.fau.de:i4/tex/i4neo.git theme
 
 Eine Makefile im Präsentationsordner kann dazu die entsprechende Theme-Makefile einbinden (und optional weitere Targets bereitstellen):
 
@@ -42,7 +42,7 @@ Eine Makefile im Präsentationsordner kann dazu die entsprechende Theme-Makefile
 \end{document}
 ```
 
-Weiterführende Informationen über die Verwendung der Vorlage sind in der [Dokumentation](doc/neotheme.pdf] zu finden.
+Weiterführende Informationen über die Verwendung der Vorlage sind in der [Dokumentation](doc/neotheme.pdf) zu finden.
 
 ## Hinweise
 

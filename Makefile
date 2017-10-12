@@ -1,4 +1,4 @@
-LOCAL_DIR   = $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
+LOCAL_DIR  := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 PACKAGE_DIR = $(LOCAL_DIR)/beamertheme-source
 DOC_DIR     = $(LOCAL_DIR)/doc
 CACHE_DIR   = $(LOCAL_DIR)/.latex-cache
@@ -25,7 +25,7 @@ clean::
 	@rm -rf "$(CACHE_DIR)"
 
 mrproper:: clean
-	rm -f $(PACKAGE_TGT) $(DOC_PDF)
+	@rm -f $(PACKAGE_TGT) $(DOC_PDF)
 
 $(PACKAGE_TGT): $(wildcard $(PACKAGE_DIR)/*.ins) $(PACKAGE_SRC)
 	@mkdir -p $(CACHE_DIR)

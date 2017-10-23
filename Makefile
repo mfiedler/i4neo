@@ -15,6 +15,8 @@ export TEXINPUTS:=$(LOCAL_DIR):$(shell pwd):$(PACKAGE_DIR):${TEXINPUTS}
 
 .PHONY: all sty doc clean mrproper
 
+.INTERMEDIATE: %.pdfpc
+
 all: sty doc
 
 sty: $(PACKAGE_TGT)
@@ -36,3 +38,7 @@ $(PACKAGE_TGT): $(wildcard $(PACKAGE_DIR)/*.ins) $(PACKAGE_SRC)
 	@mkdir -p $(CACHE_DIR)
 	@cd $(dir $< ) && $(COMPILE_TEX) $(notdir $<)
 	@cp $(CACHE_DIR)/$(notdir $@) $@
+
+%.pdfpc: %.pdf
+	@pdfpc -p -g -C $<
+	@touch -t 200910160915 $@

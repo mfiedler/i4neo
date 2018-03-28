@@ -51,34 +51,15 @@
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-  \IfFileExists{FiraSans.sty}{
-    \RequirePackage[T1]{fontenc}
-    \RequirePackage[sfdefault]{FiraSans}
-    \RequirePackage[nomap,lining]{FiraMono}
+  \IfFileExists{FiraSans-Regular.otf}{
     \defaultfontfeatures{
           Scale     = 1.0,
           Extension = .otf
     }
   }{
-    \IfFileExists{./fonts/FiraSans-Regular.otf}{
-      \defaultfontfeatures{
-            Path = ./fonts/,
-            Scale     = 1.0,
-            Extension = .otf
-      }
-    }{
-      \IfFileExists{../fonts/FiraSans-Regular.otf}{
-        \defaultfontfeatures{
-              Path = ../fonts/,
-              Scale     = 1.0,
-              Extension = .otf
-        }
-      }{
-        \PackageWarning{beamerthemeneo}{%
-          Neither Fire Package nor Package fonts directory found - %
-          using system fonts. You need to have to fonts installed.%
-        }
-      }
+    \PackageWarning{beamerthemeneo}{%
+      FiraSans font not found in path, therefore using system fonts. %
+      Make sure you have the fonts installed.%
     }
   }
   \setmonofont
@@ -123,7 +104,6 @@
       ]{FiraSans}
     \neo@fontsave
   }
-
   \AtBeginEnvironment{tabular}{%
     \addfontfeature{Numbers={Monospaced}}%
   }

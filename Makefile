@@ -10,9 +10,9 @@ PACKAGE_TGT = $(addprefix $(LOCAL_DIR)/,$(PACKAGE_STY))
 
 DOC_PDF      = $(patsubst %.tex,%.pdf,$(wildcard $(DOC_DIR)/*.tex))
 
-COMPILE_TEX := latexmk -xelatex -output-directory=$(CACHE_DIR)
+COMPILE_TEX := latexmk -lualatex -output-directory=$(CACHE_DIR)
 
-export TEXINPUTS:=$(LOCAL_DIR):$(shell pwd):$(PACKAGE_DIR):${TEXINPUTS}
+export TEXINPUTS:=$(LOCAL_DIR):$(LOCAL_DIR)/fonts/:$(shell pwd):$(PACKAGE_DIR):${TEXINPUTS}
 
 .PHONY: all sty doc clean mrproper
 

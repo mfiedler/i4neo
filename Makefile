@@ -10,7 +10,9 @@ PACKAGE_TGT = $(addprefix $(LOCAL_DIR)/,$(PACKAGE_STY))
 
 DOC_PDF      = $(patsubst %.tex,%.pdf,$(wildcard $(DOC_DIR)/*.tex))
 
-COMPILE_TEX := latexmk -lualatex -output-directory=$(CACHE_DIR)
+LATEXMK_GEN ?= -xelatex
+
+COMPILE_TEX  = latexmk $(LATEXMK_GEN) -output-directory=$(CACHE_DIR)
 
 export TEXINPUTS:=$(LOCAL_DIR):$(LOCAL_DIR)/fonts/:$(shell pwd):$(PACKAGE_DIR):${TEXINPUTS}
 

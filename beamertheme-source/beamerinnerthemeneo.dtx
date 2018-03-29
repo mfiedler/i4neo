@@ -491,7 +491,10 @@
 % \subsubsection{Lists and floats}
 %
 %    \begin{macrocode}
-\setbeamertemplate{itemize items}{\textbullet}
+\setbeamertemplate{itemize items}{\raise1pt\hbox{\vrule width 0.8ex height 0.8ex}}
+\setbeamertemplate{itemize subitem}{\raise1pt\hbox{\vrule width 0.5ex height 0.5ex}}
+\setbeamertemplate{itemize subsubitem}{\raise.5ex\hbox{\vrule width 1ex height 0.2ex}}
+\defbeamertemplate{description item}{align left}{\insertdescriptionitem\hfill}
 \setbeamertemplate{caption label separator}{: }
 \setbeamertemplate{caption}[numbered]
 %    \end{macrocode}

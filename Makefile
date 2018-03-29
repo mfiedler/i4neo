@@ -1,6 +1,7 @@
 LOCAL_DIR  := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 PACKAGE_DIR = $(LOCAL_DIR)/beamertheme-source
 DOC_DIR     = $(LOCAL_DIR)/doc
+FONTS_DIR   = $(LOCAL_DIR)/fonts
 CACHE_DIR   = $(LOCAL_DIR)/.latex-cache
 PDFPC_SIZE  = 40000
 
@@ -14,7 +15,7 @@ LATEXMK_GEN ?= -xelatex
 
 COMPILE_TEX  = latexmk $(LATEXMK_GEN) -output-directory=$(CACHE_DIR)
 
-export TEXINPUTS:=$(LOCAL_DIR):$(LOCAL_DIR)/fonts/:$(shell pwd):$(PACKAGE_DIR):${TEXINPUTS}
+export TEXINPUTS:=$(LOCAL_DIR):$(FONTS_DIR):$(shell pwd):$(PACKAGE_DIR):${TEXINPUTS}
 
 .PHONY: all sty doc clean mrproper
 

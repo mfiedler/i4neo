@@ -76,24 +76,44 @@
 %
 %    \begin{macrocode}
 
-\definecolor{nDarkYellow}{RGB}{201,147,19}
-\definecolor{nYellow}{RGB}{217,198,137}
-\definecolor{nLightYellow}{RGB}{243,238,223}
+\definecolor{nDarkGrey}{RGB}{152,164,174}
+\definecolor{nGrey}{RGB}{210,213,215}
+\definecolor{nLightGrey}{RGB}{235,236,238}
 
 \definecolor{nDarkRed}{RGB}{141,20,41}
 \definecolor{nRed}{RGB}{201,169,147}
 \definecolor{nLightRed}{RGB}{237,231,222}
 
+\definecolor{nDarkGreen}{RGB}{0,155,119}
+\definecolor{nGreen}{RGB}{170,207,189}
+\definecolor{nLightGreen}{RGB}{229,239,234}
+
 \definecolor{nDarkBlue}{RGB}{0,56,101}
 \definecolor{nBlue}{RGB}{144,167,198}
 \definecolor{nLightBlue}{RGB}{221,229,240}
 
-\definecolor{nDarkGrey}{RGB}{152,164,174}
-\definecolor{nGrey}{RGB}{210,213,215}
-\definecolor{nLightGrey}{RGB}{235,236,238}
+\definecolor{nDarkYellow}{RGB}{201,147,19}
+\definecolor{nYellow}{RGB}{217,198,137}
+\definecolor{nLightYellow}{RGB}{243,238,223}
 
 \definecolor{nBlack}{HTML}{011F32}
-
+\definecolor{nWhite}{RGB}{250,250,250}
+%    \end{macrocode}
+%
+%
+%
+% \subsubsection{Alias colors}
+%
+% Support the colors provided by the old i4 beamer theme.
+%
+%    \begin{macrocode}
+\colorlet{i4red}{nDarkRed}
+\colorlet{i4green}{nDarkGreen}
+\colorlet{i4blue}{nDarkBlue}
+\colorlet{i4yellow}{nDarkYellow}
+\colorlet{i4grey}{nDarkGrey}
+\definecolor{darkred}{rgb}{0.8,0,0}
+\colorlet{beamergreen}{green!50!black}
 %    \end{macrocode}
 %
 %
@@ -106,15 +126,23 @@
 %    \begin{macrocode}
 \newcommand{\neo@colors@dark}{
   \setbeamercolor{normal text}{%
-    fg=black!2,
+    fg=nWhite,
     bg=nBlack
+  }
+  \setbeamercolor{normal item}{%
+    fg=nWhite,
+    bg=nDarkBlue
   }
   \usebeamercolor[fg]{normal text}
 }
 \newcommand{\neo@colors@light}{
   \setbeamercolor{normal text}{%
     fg=nBlack,
-    bg=black!2
+    bg=nWhite
+  }
+  \setbeamercolor{normal item}{%
+    fg=nDarkBlue,
+    bg=nWhite
   }
 }
 \setbeamercolor{alerted text}{%
@@ -130,17 +158,17 @@
 % \subsubsection{Derived colors}
 %
 % The titles and structural elements (e.g. |itemize| bullets) are set in the
-% same color as |normal text|. This would ideally done by setting |normal text|
-% as a parent style, which we do to set |titlelike|, but this doesn't work for
-% |structure| as its foreground is set explicitly in
-% |beamercolorthemedefault.sty|.
+% same color as |normal text|.and |normal item|. This would ideally done by
+% setting |normal text| and |normal item| as a parent style, which we do to
+% set |titlelike|, but this doesn't work for |structure| as its foreground
+% is set explicitly in |beamercolorthemedefault.sty|.
 %
 %    \begin{macrocode}
 \setbeamercolor{titlelike}{use=normal text, parent=normal text}
 \setbeamercolor{author}{use=normal text, parent=normal text}
 \setbeamercolor{date}{use=normal text, parent=normal text}
 \setbeamercolor{institute}{use=normal text, parent=normal text}
-\setbeamercolor{structure}{use=normal text, fg=normal text.fg}
+\setbeamercolor{structure}{use=normal item, fg=normal item.fg}
 %    \end{macrocode}
 %
 % The “primary” palette should be used for the most important navigational

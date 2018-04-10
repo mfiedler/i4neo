@@ -38,7 +38,7 @@ $(PACKAGE_TGT): $(wildcard $(PACKAGE_DIR)/*.ins) $(PACKAGE_SRC)
 	@cd $(PACKAGE_DIR) && latex -output-directory=$(CACHE_DIR) $(notdir $<)
 	@cp $(addprefix $(CACHE_DIR)/,$(PACKAGE_STY)) $(LOCAL_DIR)/
 
-%.pdf: %.tex  $(wildcard *.bib) $(PACKAGE_TGT)
+%.pdf: %.tex $(wildcard *.bib) $(PACKAGE_TGT)
 	@mkdir -p $(CACHE_DIR)
 	@cd $(dir $< ) && $(COMPILE_TEX) $(notdir $<)
 	@cp $(CACHE_DIR)/$(notdir $@) $@
@@ -49,4 +49,6 @@ pdfpc-%: %.pdf
 
 evince-%: %.pdf
 	@evince $<
+
+FORCE:
 

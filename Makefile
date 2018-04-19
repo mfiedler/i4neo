@@ -33,13 +33,21 @@ clean::
 mrproper:: clean
 	@rm -f $(PACKAGE_TGT) $(DOC_PDF) $(patsubst %.tex,%.pdfpc,$(wildcard $(DOC_DIR)/*.tex))
 
-$(PACKAGE_TGT): $(wildcard $(PACKAGE_DIR)/*.ins) $(PACKAGE_SRC)
-	@mkdir -p $(CACHE_DIR)
+$(PACKAGE_TGT): $(wildcard $(PACKAGE_DIR)/*.ins) $(PACKAGE_SRC) $(CACHE_DIR)
 	@cd $(PACKAGE_DIR) && latex -output-directory=$(CACHE_DIR) $(notdir $<)
 	@cp $(addprefix $(CACHE_DIR)/,$(PACKAGE_STY)) $(LOCAL_DIR)/
 
-%.pdf: %.tex $(wildcard *.bib) $(PACKAGE_TGT)
-	@mkdir -p $(CACHE_DIR)
+
+$(CACHE_DIR):; @mkdir -p $(CACHE_DIR)
+
+
+%_handout.pdf: %.tex $(wildcard *.bib) $(PACKAGE_TGT) $(CACHE_DIR)
+	@cd $(dir $< ) && $(COMPILE_TEX) -jobname=$*_handout $(notdir $<)
+	@cp $(CACHE_DIR)/$(notdir $@) $@
+	@test ! -f $@pc -a -f $(CACHE_DIR)/$(notdir $@)pc && ( /bin/echo -e "[file]\n$@\n[font_size]\n$(PDFPC_SIZE)" ; cat $(CACHE_DIR)/$(notdir $@)pc | sed 's/\\\\/\n/g' | sed 's/\\par/\n\n/g' ) > $@pc || echo "ignoring PDFPC file" && exit 0
+
+
+%.pdf: %.tex $(wildcard *.bib) $(PACKAGE_TGT) $(CACHE_DIR)
 	@cd $(dir $< ) && $(COMPILE_TEX) $(notdir $<)
 	@cp $(CACHE_DIR)/$(notdir $@) $@
 	@test ! -f $@pc -a -f $(CACHE_DIR)/$(notdir $@)pc && ( /bin/echo -e "[file]\n$@\n[font_size]\n$(PDFPC_SIZE)" ; cat $(CACHE_DIR)/$(notdir $@)pc | sed 's/\\\\/\n/g' | sed 's/\\par/\n\n/g' ) > $@pc || echo "ignoring PDFPC file" && exit 0

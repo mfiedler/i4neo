@@ -135,11 +135,13 @@
 \defbeamertemplate{frame footer}{custom}[1]{ #1 }
 %    \end{macrocode}
 %
+%    Add strut to ensure that frame numbers don't jump
 %    \begin{macrocode}
+\newcommand{\neo@framenumberingstrut}{\vphantom{0123456789}}
 \defbeamertemplate{frame numbering}{none}{}
-\defbeamertemplate{frame numbering}{counter}{\insertframenumber}
+\defbeamertemplate{frame numbering}{counter}{\neo@framenumberingstrut\insertframenumber}
 \defbeamertemplate{frame numbering}{fraction}{
-  \insertframenumber/\inserttotalframenumber
+  \neo@framenumberingstrut\insertframenumber/\inserttotalframenumber
 }
 %    \end{macrocode}
 % \end{macro}

@@ -119,6 +119,10 @@
     \ifx\insertinstitute\@empty\else\usebeamertemplate*{institute}\fi
     \vfill
     \begin{minipage}[b][0.25\paperheight][t]{\textwidth}
+% The lower part of the title page background contains a white area which
+% covers this whole minipage. Thus switch the text color back to normal
+      \neo@colors@light%
+      \usebeamercolor[fg]{normal text}%
       \ifx\inserttitlegraphic\@empty\else\usebeamertemplate*{title graphic}\fi
     \end{minipage}
   \end{minipage}

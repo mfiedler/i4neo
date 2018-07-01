@@ -555,14 +555,14 @@
 %     Optional arguments to Beamer's frames are implemented using
 %     |\define@key| from the |keyval| package, which will execute code when the
 %     defined option is called. For the |standout| option, we begin a group,
-%     change the colors and fonts, and set a \centering alignment.
+%     change the colors and fonts, use a plain slide, and set a \centering alignment.
 %
 %    \begin{macrocode}
 \providebool{neo@standout}
 \define@key{beamerframe}{standout}[true]{%
   \booltrue{neo@standout}
   \begingroup
-    \setkeys{beamerframe}{c}
+    \setkeys{beamerframe}{c,plain}
     \ifbeamercolorempty[bg]{palette primary}{
       \setbeamercolor{background canvas}{
         use=palette primary,

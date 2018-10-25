@@ -79,7 +79,7 @@
 \endgroup
 
 
-\def\lastframenumber{0}
+\def\lastpage{0}
 
 % define command \pnote{} that works like note but
 % additionally writes notes to file in pdfpc readable format
@@ -88,11 +88,11 @@
 	\note{#1}%
 
 	% if frame changed - write a new header
-	\ifdim\theframenumber pt>\lastframenumber pt
-		\let\lastframenumber\theframenumber
+	\ifdim\thepage pt>\lastpage pt
+		\let\lastpage\thepage
 		\begingroup
 			\let\#\hashchar
-			\immediate\write\pdfpcnotesfile{\#\#\# \theframenumber}%
+			\immediate\write\pdfpcnotesfile{\#\#\# \thepage}%
 		\endgroup
 	\fi
 

@@ -71,7 +71,7 @@
     ]
     {FiraMono}
   \newcommand{\neo@fontsave}{
-    \let\firaneofamily\sfdefault  
+    \let\firaneofamily\sfdefault
     \renewcommand*\familydefault{\firaneofamily}
   }
   \newcommand{\neo@fontlight}{
@@ -386,6 +386,12 @@
   {}
   {\PackageError{beamerfontthemeneo}{Patching section title failed}\@ehc}
 \@tempswafalse
+\patchcmd{\beamer@section}
+  {\edef\insertsectionhead{\noexpand\hyperlink{Navigation\the\c@page}{\unexpanded{#1}}}}
+  {\edef\insertsectionhead{\noexpand\hyperlink{Navigation\the\c@page}{%
+    \noexpand\neo@sectiontitleformat{\unexpanded{#1}}}}}
+  {\@tempswatrue}
+  {}
 \patchcmd{\beamer@section}
   {\def\insertsectionhead{\hyperlink{Navigation\the\c@page}{#1}}}
   {\def\insertsectionhead{\hyperlink{Navigation\the\c@page}{%

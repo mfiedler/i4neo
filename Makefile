@@ -60,4 +60,3 @@ evince-%: %.pdf
 	@evince $<
 
 FORCE:
-

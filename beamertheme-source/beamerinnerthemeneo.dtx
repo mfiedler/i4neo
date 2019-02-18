@@ -41,6 +41,7 @@
 \RequirePackage{keyval}
 \RequirePackage{calc}
 \RequirePackage{pgfopts}
+\RequirePackage{pgfpages}
 \RequirePackage{tikz}
 %    \end{macrocode}
 %
@@ -578,6 +579,13 @@
       fg=palette primary.fg
     }
     \usebeamercolor[fg]{palette primary}
+    \makeatletter
+    \def\beamer@framenotesbegin{% at beginning of slide
+      \usebeamercolor[fg]{palette primary}
+      \gdef\beamer@noteitems{}%
+      \gdef\beamer@notes{}%
+    }
+    \makeatother
 }
 %    \end{macrocode}
 %
@@ -603,6 +611,11 @@
 %
 %    \begin{macrocode}
   \AtBeginEnvironment{beamer@frameslide}{
+    \makeatletter
+    \usebeamercolor[fg]{normal text}
+    \gdef\beamer@noteitems{}%
+    \gdef\beamer@notes{}%
+    \makeatother
     \ifbool{neo@standout}{
       \centering
       \usebeamerfont{standout}

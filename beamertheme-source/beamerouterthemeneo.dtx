@@ -31,6 +31,7 @@
 %    \begin{macrocode}
 \RequirePackage{etoolbox}
 \RequirePackage{calc}
+\RequirePackage{pgfpages}
 \RequirePackage{pgfopts}
 %    \end{macrocode}
 %
@@ -64,6 +65,33 @@
 %    \end{macrocode}
 % \end{macro}
 %
+% \begin{macro}{footer}
+%    Adds slide numbers to the bottom right of each slide.
+%    \begin{macrocode}
+\pgfkeys{
+  /neo/outer/footer/.cd,
+    .is choice,
+    none/.code=\setbeamertemplate{frame footer}[none],
+    author/.code=\setbeamertemplate{frame footer}[author],
+    author title/.code=\setbeamertemplate{frame footer}[author title],
+	title/.code=\setbeamertemplate{frame footer}[title],
+	title section/.code=\setbeamertemplate{frame footer}[title section],
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{footer style}
+%    Footer background color
+%    \begin{macrocode}
+\pgfkeys{
+  /neo/outer/footer style/.cd,
+    .is choice,
+    plain/.code=\setbeamertemplate{footline}[plain],
+    standout/.code=\setbeamertemplate{footline}[standout],
+}
+%    \end{macrocode}
+% \end{macro}
+%
 % \begin{macro}{progressbar}
 %    Adds a progress bar to the top, bottom, or frametitle of each slide.
 %    \begin{macrocode}
@@ -73,7 +101,6 @@
     none/.code={%
       \setbeamertemplate{headline}[plain]
       \setbeamertemplate{frametitle}[plain]
-      \setbeamertemplate{footline}[plain]
     },
     head/.code={\pgfkeys{/neo/outer/progressbar=none}
       \addtobeamertemplate{headline}{}{%
@@ -100,6 +127,8 @@
 \newcommand{\neo@outer@setdefaults}{
   \pgfkeys{/neo/outer/.cd,
     frametitle icon=none,
+    footer=none,
+    footer style=plain,
     numbering=counter,
     progressbar=none,
   }
@@ -132,6 +161,24 @@
 %    fraction of the total frames.
 %    \begin{macrocode}
 \defbeamertemplate{frame footer}{none}{}
+\defbeamertemplate{frame footer}{author}{
+  \insertshortauthor%
+}
+\defbeamertemplate{frame footer}{author title}{
+  \insertshortauthor%
+  \hfill%
+  \insertshorttitle%
+  \hfill%
+}
+\defbeamertemplate{frame footer}{title}{
+  \insertshorttitle%
+}
+\defbeamertemplate{frame footer}{title section}{
+  \insertshorttitle%
+  \hfill%
+  \insertsection %
+  \hfill%
+}
 \defbeamertemplate{frame footer}{custom}[1]{ #1 }
 %    \end{macrocode}
 %
@@ -153,6 +200,14 @@
 \defbeamertemplate{headline}{plain}{}
 \defbeamertemplate{footline}{plain}{%
   \begin{beamercolorbox}[wd=\textwidth, sep=3ex]{footline}%
+    \usebeamerfont{page number in head/foot}%
+    \usebeamertemplate*{frame footer}
+    \hfill%
+    \usebeamertemplate*{frame numbering}
+  \end{beamercolorbox}%
+}
+\defbeamertemplate{footline}{standout}{%
+  \begin{beamercolorbox}[wd=\textwidth, sep=1.3ex]{palette primary}%
     \usebeamerfont{page number in head/foot}%
     \usebeamertemplate*{frame footer}
     \hfill%
@@ -230,6 +285,8 @@
 %    \end{macrocode}
 % \end{macro}
 %
+
+
 %
 %
 % \begin{macro}{appendix}

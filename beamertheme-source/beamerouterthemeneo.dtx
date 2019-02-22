@@ -66,7 +66,7 @@
 % \end{macro}
 %
 % \begin{macro}{footer}
-%    Adds slide numbers to the bottom right of each slide.
+%    Adds additional presentation information to the footer
 %    \begin{macrocode}
 \pgfkeys{
   /neo/outer/footer/.cd,
@@ -74,8 +74,8 @@
     none/.code=\setbeamertemplate{frame footer}[none],
     author/.code=\setbeamertemplate{frame footer}[author],
     author title/.code=\setbeamertemplate{frame footer}[author title],
-	title/.code=\setbeamertemplate{frame footer}[title],
-	title section/.code=\setbeamertemplate{frame footer}[title section],
+    title/.code=\setbeamertemplate{frame footer}[title],
+    title section/.code=\setbeamertemplate{frame footer}[title section],
 }
 %    \end{macrocode}
 % \end{macro}
@@ -83,17 +83,21 @@
 % \begin{macro}{footer style}
 %    Footer background color
 %    \begin{macrocode}
+\providebool{neo@standoutfooter}
 \pgfkeys{
   /neo/outer/footer style/.cd,
     .is choice,
-    plain/.code=\setbeamertemplate{footline}[plain],
-    standout/.code=\setbeamertemplate{footline}[standout],
+    plain/.code={\boolfalse{neo@standoutfooter}\setbeamertemplate{footline}[plain]},
+    standout/.code={\booltrue{neo@standoutfooter}\setbeamertemplate{footline}[standout]},
 }
 %    \end{macrocode}
 % \end{macro}
 %
 % \begin{macro}{progressbar}
 %    Adds a progress bar to the top, bottom, or frametitle of each slide.
+%    In case this is used in combination with footer style, it must be set
+%    afterwards (e.g. to have the progressbar on top of the footer styled with
+%    standout).
 %    \begin{macrocode}
 \pgfkeys{
   /neo/outer/progressbar/.cd,
@@ -113,8 +117,10 @@
       }
     },
     foot/.code={\pgfkeys{/neo/outer/progressbar=none}
-      \addtobeamertemplate{footline}{}{%
-        \usebeamertemplate*{progress bar in head/foot}%
+      \ifbool{neo@standoutfooter}{%
+        \addtobeamertemplate{footline}{\usebeamertemplate*{progress bar in head/foot}}{} %
+      }{%
+        \addtobeamertemplate{footline}{}{\usebeamertemplate*{progress bar in head/foot}} %
       }
     },
 }
@@ -176,7 +182,7 @@
 \defbeamertemplate{frame footer}{title section}{
   \insertshorttitle%
   \hfill%
-  \insertsection %
+  \insertsection%
   \hfill%
 }
 \defbeamertemplate{frame footer}{custom}[1]{ #1 }
@@ -255,7 +261,7 @@
 }
 \setbeamertemplate{frametitle continuation}{%
   \usebeamerfont{frametitle}
-  \romannumeral \insertcontinuationcount
+   {\normalfont ()\insertcontinuationcount)}
 }
 %    \end{macrocode}
 % \end{macro}
@@ -285,7 +291,6 @@
 %    \end{macrocode}
 % \end{macro}
 %
-
 
 %
 %

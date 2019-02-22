@@ -65,6 +65,33 @@
 %    \end{macrocode}
 % \end{macro}
 %
+% \begin{macro}{notes}
+%    Show notes in presentation
+%    \begin{macrocode}
+\pgfkeys{
+  /neo/outer/notes/.cd,
+    .is choice,
+    none/.code=\pgfkeysalso{notes=hide},
+    hide/.code=\setbeameroption{hide notes},
+    show/.code={\setbeamertemplate{note page}[print]\setbeameroption{show notes}},
+    only/.code={\setbeamertemplate{note page}[print]\setbeameroption{show only notes}},
+    preview-left/.code={\setbeamertemplate{note page}[default]\setbeameroption{show notes on second screen=left}},
+    preview-right/.code={\setbeamertemplate{note page}[default]\setbeameroption{show notes on second screen=right}},
+    preview-top/.code={\setbeamertemplate{note page}[default]\setbeameroption{show notes on second screen=top}},
+    preview-bottom/.code={\setbeamertemplate{note page}[default]\setbeameroption{show notes on second screen=bottom}},
+    preview-left-big/.code={\setbeamertemplate{note page}[preview-big]\setbeameroption{show notes on second screen=left}},
+    preview-right-big/.code={\setbeamertemplate{note page}[preview-big]\setbeameroption{show notes on second screen=right}},
+    preview-top-big/.code={\setbeamertemplate{note page}[preview-big]\setbeameroption{show notes on second screen=top}},
+    preview-bottom-big/.code={\setbeamertemplate{note page}[preview-big]\setbeameroption{show notes on second screen=bottom}},
+    left/.code={\setbeamertemplate{note page}[print]\setbeameroption{show notes on second screen=left}},
+    right/.code={\setbeamertemplate{note page}[print]\setbeameroption{show notes on second screen=right}},
+    top/.code={\setbeamertemplate{note page}[print]\setbeameroption{show notes on second screen=top}},
+    bottom/.code={\setbeamertemplate{note page}[print]\setbeameroption{show notes on second screen=bottom}},
+}
+%    \end{macrocode}
+% \end{macro}
+
+%
 % \begin{macro}{footer}
 %    Adds additional presentation information to the footer
 %    \begin{macrocode}
@@ -292,6 +319,89 @@
 % \end{macro}
 %
 
+% \begin{macro}{custom notes}
+%    Templates for note pages
+%    \begin{macrocode}
+\defbeamertemplate{note page}{preview-big}
+{%
+  {%
+    \scriptsize
+    \usebeamerfont{note title}\usebeamercolor[fg]{note title}%
+    \ifbeamercolorempty[bg]{note title}{}{%
+      \insertvrule{.45\paperheight}{note title.bg}%
+      \vskip-.45\paperheight%
+      \nointerlineskip%
+    }%
+    \vbox{
+      \hfill\insertslideintonotes{0.45}\hskip-\Gm@rmargin\hskip0pt%
+      \vskip-0.45\paperheight%
+      \nointerlineskip
+      \begin{pgfpicture}{0cm}{0cm}{0cm}{0cm}
+        \begin{pgflowlevelscope}{\pgftransformrotate{90}}
+          {\pgftransformshift{\pgfpoint{-2cm}{0.2cm}}%
+          \pgftext[base,left]{\usebeamerfont{note date}\usebeamercolor[fg]{note date}\the\year-\ifnum\month<10\relax0\fi\the\month-\ifnum\day<10\relax0\fi\the\day}}
+        \end{pgflowlevelscope}
+      \end{pgfpicture}}
+    \nointerlineskip
+    \vbox to .45\paperheight{\vskip0.5em
+      \hbox{\insertshorttitle[width=8cm]}%
+      \setbox\beamer@tempbox=\hbox{\insertsection}%
+      \hbox{\ifdim\wd\beamer@tempbox>1pt{\hskip4pt\raise3pt\hbox{\vrule
+            width0.4pt height7pt\vrule width 9pt
+            height0.4pt}}\hskip1pt\hbox{\begin{minipage}[t]{7.5cm}\def\breakhere{}\insertsection\end{minipage}}\fi%
+      }%
+      \setbox\beamer@tempbox=\hbox{\insertsubsection}%
+      \hbox{\ifdim\wd\beamer@tempbox>1pt{\hskip17.4pt\raise3pt\hbox{\vrule
+            width0.4pt height7pt\vrule width 9pt
+            height0.4pt}}\hskip1pt\hbox{\begin{minipage}[t]{7.5cm}\def\breakhere{}\insertsubsection\end{minipage}}\fi%
+      }%
+      \setbox\beamer@tempbox=\hbox{\insertshortframetitle}%
+      \hbox{\ifdim\wd\beamer@tempbox>1pt{\hskip30.8pt\raise3pt\hbox{\vrule
+            width0.4pt height7pt\vrule width 9pt
+            height0.4pt}}\hskip1pt\hbox{\insertshortframetitle[width=7cm]}\fi%
+      }%
+      \vfil}%
+  }%
+  \ifbeamercolorempty[bg]{note page}{}{%
+    \nointerlineskip%
+    \insertvrule{.55\paperheight}{note page.bg}%
+    \vskip-.55\paperheight%
+  }%
+  \vskip.25em
+  \nointerlineskip
+  \insertnote
+}
+\defbeamertemplate{note page}{print}
+{%
+  {%
+  \nointerlineskip%
+  \begin{beamercolorbox}[%
+     wd=\paperwidth,%
+     sep=0pt,%
+     leftskip=\neo@frametitle@padding,%
+     rightskip=\neo@frametitle@padding,%
+  ]{note title}%
+    \usebeamerfont{frametitle}%
+    \neo@frametitlestrut@start%
+    \insertframetitle%
+    \usebeamertemplate*{frametitle icon}%
+    \nolinebreak%
+    \neo@frametitlestrut@end%
+  \end{beamercolorbox}%
+  }%
+  \insertnote%
+  \vfill%
+  \begin{beamercolorbox}[wd=\paperwidth, sep=3ex]{footline}%
+    \usebeamerfont{page number in head/foot}%
+    \usebeamertemplate*{frame footer}
+    \hfill%
+    \usebeamertemplate*{frame numbering}
+  \end{beamercolorbox}%
+  \vskip4pt%
+}
+%    \end{macrocode}
+% \end{macro}
+%
 %
 %
 % \begin{macro}{appendix}

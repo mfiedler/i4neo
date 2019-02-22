@@ -101,22 +101,6 @@
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{notes}
-%    Show notes in presentation
-%    \begin{macrocode}
-\pgfkeys{/neo/notes/.cd,
-  .is choice,
-  none/.code=\pgfkeysalso{notes=hide},
-  hide/.code=\setbeameroption{hide notes},
-  show/.code=\setbeameroption{show notes},
-  only/.code=\setbeameroption{show only notes},
-  left/.code=\setbeameroption{show notes on second screen=left},
-  right/.code=\setbeameroption{show notes on second screen=right},
-  top/.code=\setbeameroption{show notes on second screen=top},
-  bottom/.code=\setbeameroption{show notes on second screen=bottom},
-}
-%    \end{macrocode}
-%
 % Shortcut option names as aliases to the corresponding |key=value| options.
 %
 %    \begin{macrocode}
@@ -175,7 +159,6 @@
   }{}
 }
 %    \end{macrocode}
-%
 %
 %
 % \subsubsection{Custom commands}

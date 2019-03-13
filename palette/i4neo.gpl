@@ -1,0 +1,28 @@
+GIMP Palette
+Name: i4neo
+Columns: 0
+#
+152  164  174	nDarkGrey
+210  213  215	nGrey
+235  236  238	nLightGrey
+141   20   41	nDarkRed
+201  169  147	nRed
+237  231  222	nLightRed
+  0  155  119	nDarkGreen
+170  207  189	nGreen
+229  239  234	nLightGreen
+  0   56  101	nDarkBlue
+144  167  198	nBlue
+221  229  240	nLightBlue
+  0  177  235	nDarkCyan
+180  214  245	nCyan
+234  243  252	nLightCyan
+201  147   19	nDarkYellow
+217  198  137	nYellow
+243  238  223	nLightYellow
+  1   31   50	nBlack
+250  250  250	nWhite
+204    0    0   darkred
+0     83   39   beamergreen
+228  212  201   nRedBang50
+236  226  196   nYellowBang50

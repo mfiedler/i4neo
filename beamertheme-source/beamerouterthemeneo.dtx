@@ -236,7 +236,7 @@
     \usebeamerfont{page number in head/foot}%
     \usebeamertemplate*{frame footer}
     \hfill%
-    \usebeamertemplate*{frame numbering}
+    \parbox{.1\framewidth}{\hfill\usebeamertemplate*{frame numbering}}
   \end{beamercolorbox}%
 }
 \defbeamertemplate{footline}{standout}{%
@@ -244,7 +244,7 @@
     \usebeamerfont{page number in head/foot}%
     \usebeamertemplate*{frame footer}
     \hfill%
-    \usebeamertemplate*{frame numbering}
+    \parbox{.1\framewidth}{\hfill\usebeamertemplate*{frame numbering}}
   \end{beamercolorbox}%
 }
 %    \end{macrocode}

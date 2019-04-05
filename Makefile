@@ -13,7 +13,7 @@ DOC_PDF      = $(patsubst %.tex,%.pdf,$(wildcard $(DOC_DIR)/*.tex))
 
 LATEXMK_GEN ?= -xelatex
 
-COMPILE_TEX  = latexmk $(LATEXMK_GEN) -output-directory=$(CACHE_DIR)
+COMPILE_TEX  = latexmk $(LATEXMK_GEN) -output-directory=$(CACHE_DIR) --synctex=1
 
 export TEXINPUTS:=$(LOCAL_DIR):$(FONTS_DIR):$(shell pwd):$(PACKAGE_DIR):${TEXINPUTS}
 
@@ -42,12 +42,14 @@ $(CACHE_DIR):; @mkdir -p $(CACHE_DIR)
 %_handout.pdf: %.tex $(wildcard *.bib) $(PACKAGE_TGT) $(CACHE_DIR)
 	@cd $(dir $< ) && $(COMPILE_TEX) -jobname=$*_handout $(notdir $<)
 	@cp $(CACHE_DIR)/$(notdir $@) $@
+	@cp $(CACHE_DIR)/$(notdir $*_handout.synctex.gz) $*_handout.synctex.gz
 	@test ! -f $@pc -a -f $(CACHE_DIR)/$(notdir $@)pc && ( /bin/echo "[file]"; /bin/echo "$@"; /bin/echo "[font_size]"; /bin/echo "$(PDFPC_SIZE)"; cat $(CACHE_DIR)/$(notdir $@)pc | sed 's/\\\\/\n/g' | sed 's/\\par/\n\n/g' ) > $@pc || echo "ignoring PDFPC file" && exit 0
 
 
 %.pdf: %.tex $(wildcard *.bib) $(PACKAGE_TGT) $(CACHE_DIR)
 	@cd $(dir $< ) && $(COMPILE_TEX) $(notdir $<)
 	@cp $(CACHE_DIR)/$(notdir $@) $@
+	@cp $(CACHE_DIR)/$(notdir $*.synctex.gz) $*.synctex.gz
 	@test ! -f $@pc -a -f $(CACHE_DIR)/$(notdir $@)pc && ( /bin/echo "[file]"; /bin/echo "$@"; /bin/echo "[font_size]"; /bin/echo "$(PDFPC_SIZE)"; cat $(CACHE_DIR)/$(notdir $@)pc | sed 's/\\\\/\n/g' | sed 's/\\par/\n\n/g' ) > $@pc || echo "ignoring PDFPC file" && exit 0
 
 preview-%: %.tex $(wildcard *.bib) $(PACKAGE_TGT) $(CACHE_DIR)

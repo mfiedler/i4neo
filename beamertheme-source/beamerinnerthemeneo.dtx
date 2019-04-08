@@ -151,7 +151,12 @@
     \titlepage
   \else
     {
-      \usebackgroundtemplate{\includegraphics[width=\paperwidth]{images/titlepage-#1}}
+      \def\backgroundimg{images/titlepage-#1}
+      \ifdimcomp{\beamer@paperwidth}{=}{16.00cm}{\ifdimcomp{\beamer@paperheight}{=}{9.00cm}{%
+          % 16:9
+          \def\backgroundimg{images/titlepage-#1-highres-169}
+      }{}}{}
+      \usebackgroundtemplate{\includegraphics[width=\paperwidth]{\backgroundimg}}
       \frame[plain,noframenumbering]{
         \neo@colors@dark
         \setbeamercolor{title separator}{

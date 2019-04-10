@@ -33,6 +33,8 @@
 \RequirePackage{calc}
 \RequirePackage{pgfpages}
 \RequirePackage{pgfopts}
+\RequirePackage{tikz}
+\usetikzlibrary{fit}
 %    \end{macrocode}
 %
 %
@@ -195,22 +197,18 @@
 %    \begin{macrocode}
 \defbeamertemplate{frame footer}{none}{}
 \defbeamertemplate{frame footer}{author}{
-  \insertshortauthor%
+	\node[iteml] (footeriteml) at (current page.south west) {\insertshortauthor};%
 }
 \defbeamertemplate{frame footer}{author title}{
-  \insertshortauthor%
-  \hfill%
-  \insertshorttitle%
-  \hfill%
+	\node[iteml] (footeriteml) at (current page.south west) {\insertshortauthor};%
+	\node[itemm] (footeritemm) at (current page.south) {\insertshorttitle};%
 }
 \defbeamertemplate{frame footer}{title}{
-  \insertshorttitle%
+	\node[iteml] (footeriteml) at (current page.south west) {\insertshorttile};%
 }
 \defbeamertemplate{frame footer}{title section}{
-  \insertshorttitle%
-  \hfill%
-  \insertsection%
-  \hfill%
+	\node[iteml] (footeriteml) at (current page.south west) {\insertshorttitle};%
+	\node[itemm] (footeritemm) at (current page.south) {\insertshortsection};%
 }
 \defbeamertemplate{frame footer}{custom}[1]{ #1 }
 %    \end{macrocode}
@@ -232,20 +230,53 @@
 %    \begin{macrocode}
 \defbeamertemplate{headline}{plain}{}
 \defbeamertemplate{footline}{plain}{%
-  \begin{beamercolorbox}[wd=\textwidth, sep=1.3ex]{footline}%
-    \usebeamerfont{page number in head/foot}%
-    \usebeamertemplate*{frame footer}
-    \hfill%
-    \parbox{.1\framewidth}{\hfill\usebeamertemplate*{frame numbering}}
+	\begin{tikzpicture}[overlay]
+		\node[anchor=south] (footerbaseline) at (current page.south) {\vphantom{Ag}};
+		\tikzset{%
+			every node/.style={font=\usebeamerfont{page number in head/foot}\usebeamercolor[fg]{block title}},
+			every node/.append style={baseline=(footerbaseline.base)},
+			iteml/.style={anchor=base west, xshift=1ex},
+			itemm/.style={anchor=base},
+			itemr/.style={anchor=base east, xshift=-1ex},
+		};
+		\def\drawfooter{%
+			\begin{scope}[every node/.append style={yshift=0.9em}]
+			\usebeamertemplate{frame footer}
+			\node[itemr] (footeritemr) at (current page.south east) {\usebeamertemplate{frame numbering}};
+			\end{scope}
+		}%
+		\drawfooter%
+	\end{tikzpicture}
   \end{beamercolorbox}%
 }
+\long\def\ifnodedefined#1#2#3{%
+    \@ifundefined{pgf@sh@ns@#1}{#3}{#2}%
+}
 \defbeamertemplate{footline}{standout}{%
-  \begin{beamercolorbox}[wd=\textwidth, sep=1.3ex]{palette primary}%
-    \usebeamerfont{page number in head/foot}%
-    \usebeamertemplate*{frame footer}
-    \hfill%
-    \parbox{.1\framewidth}{\hfill\usebeamertemplate*{frame numbering}}
-  \end{beamercolorbox}%
+	\begin{tikzpicture}[overlay]
+		\node[anchor=south] (footerbaseline) at (current page.south) {\vphantom{Ag}};
+		\tikzset{%
+			every node/.style={font=\usebeamerfont{page number in head/foot}\usebeamercolor[bg]{block title}},
+			every node/.append style={baseline=(footerbaseline.base)},
+			iteml/.style={anchor=base west, xshift=1ex},
+			itemm/.style={anchor=base},
+			itemr/.style={anchor=base east, xshift=-1ex},
+		};
+		\def\drawfooter{%
+			\begin{scope}[every node/.append style={yshift=0.9em}]
+			\usebeamertemplate{frame footer}
+			\node[itemr] (footeritemr) at (current page.south east) {\usebeamertemplate{frame numbering}};
+			\end{scope}
+			\ifnodedefined{footeritemm}{%
+				\node[fit=(footeriteml)(footeritemm)(footeritemr)] (footer) {};
+			}{%
+				\node[fit=(footeriteml)(footeritemr)] (footer) {};
+			}
+		}%
+		\phantom{\drawfooter}%
+		\path[fill={block title.fg}] (current page.south west) rectangle (footer.north -| current page.east);
+		\drawfooter%
+	\end{tikzpicture}
 }
 %    \end{macrocode}
 % \end{macro}

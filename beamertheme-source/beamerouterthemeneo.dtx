@@ -103,6 +103,7 @@
     none/.code=\setbeamertemplate{frame footer}[none],
     author/.code=\setbeamertemplate{frame footer}[author],
     author title/.code=\setbeamertemplate{frame footer}[author title],
+    author section/.code=\setbeamertemplate{frame footer}[author section],
     title/.code=\setbeamertemplate{frame footer}[title],
     title section/.code=\setbeamertemplate{frame footer}[title section],
 }
@@ -210,6 +211,10 @@
 	\node[iteml] (footeriteml) at (current page.south west) {\insertshorttitle};%
 	\node[itemm] (footeritemm) at (current page.south) {\insertshortsection};%
 }
+\defbeamertemplate{frame footer}{author section}{
+	\node[iteml] (footeriteml) at (current page.south west) {\insertshortauthor};%
+	\node[itemm] (footeritemm) at (current page.south) {\insertshortsection};%
+}
 \defbeamertemplate{frame footer}{custom}[1]{ #1 }
 %    \end{macrocode}
 %
@@ -231,6 +236,7 @@
 \defbeamertemplate{headline}{plain}{}
 \defbeamertemplate{footline}{plain}{%
 	\begin{tikzpicture}[overlay]
+		\def\insertshortsection{\insertsectionhead}
 		\node[anchor=south] (footerbaseline) at (current page.south) {\vphantom{Ag}};
 		\tikzset{%
 			every node/.style={font=\usebeamerfont{page number in head/foot}\usebeamercolor[fg]{block title}},
@@ -254,6 +260,7 @@
 }
 \defbeamertemplate{footline}{standout}{%
 	\begin{tikzpicture}[overlay]
+		\def\insertshortsection{\insertsectionhead}
 		\node[anchor=south] (footerbaseline) at (current page.south) {\vphantom{Ag}};
 		\tikzset{%
 			every node/.style={font=\usebeamerfont{page number in head/foot}\usebeamercolor[bg]{block title}},

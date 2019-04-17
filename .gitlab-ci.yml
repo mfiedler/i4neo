@@ -1,4 +1,6 @@
-trigger_build:
-  stage: deploy
+before_script:
+  - apt-get update -qq && apt-get install -y -qq curl
+
+build_demo:
   script:
     - "curl -X POST -F token=dfdc8811b291493d39a7fb7929641e -F ref=master https://gitlab.cs.fau.de/api/v4/projects/2380/trigger/pipeline"

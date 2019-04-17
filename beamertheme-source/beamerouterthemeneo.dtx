@@ -33,8 +33,6 @@
 \RequirePackage{calc}
 \RequirePackage{pgfpages}
 \RequirePackage{pgfopts}
-\RequirePackage{tikz}
-\usetikzlibrary{fit}
 %    \end{macrocode}
 %
 %
@@ -103,7 +101,6 @@
     none/.code=\setbeamertemplate{frame footer}[none],
     author/.code=\setbeamertemplate{frame footer}[author],
     author title/.code=\setbeamertemplate{frame footer}[author title],
-    author section/.code=\setbeamertemplate{frame footer}[author section],
     title/.code=\setbeamertemplate{frame footer}[title],
     title section/.code=\setbeamertemplate{frame footer}[title section],
 }
@@ -198,22 +195,22 @@
 %    \begin{macrocode}
 \defbeamertemplate{frame footer}{none}{}
 \defbeamertemplate{frame footer}{author}{
-	\node[iteml] (footeriteml) at (current page.south west) {\insertshortauthor};%
+  \insertshortauthor%
 }
 \defbeamertemplate{frame footer}{author title}{
-	\node[iteml] (footeriteml) at (current page.south west) {\insertshortauthor};%
-	\node[itemm] (footeritemm) at (current page.south) {\insertshorttitle};%
+  \insertshortauthor%
+  \hfill%
+  \insertshorttitle%
+  \hfill%
 }
 \defbeamertemplate{frame footer}{title}{
-	\node[iteml] (footeriteml) at (current page.south west) {\insertshorttile};%
+  \insertshorttitle%
 }
 \defbeamertemplate{frame footer}{title section}{
-	\node[iteml] (footeriteml) at (current page.south west) {\insertshorttitle};%
-	\node[itemm] (footeritemm) at (current page.south) {\insertshortsection};%
-}
-\defbeamertemplate{frame footer}{author section}{
-	\node[iteml] (footeriteml) at (current page.south west) {\insertshortauthor};%
-	\node[itemm] (footeritemm) at (current page.south) {\insertshortsection};%
+  \insertshorttitle%
+  \hfill%
+  \insertsection%
+  \hfill%
 }
 \defbeamertemplate{frame footer}{custom}[1]{ #1 }
 %    \end{macrocode}
@@ -235,55 +232,20 @@
 %    \begin{macrocode}
 \defbeamertemplate{headline}{plain}{}
 \defbeamertemplate{footline}{plain}{%
-	\begin{tikzpicture}[overlay]
-		\def\insertshortsection{\insertsectionhead}
-		\node[anchor=south] (footerbaseline) at (current page.south) {\vphantom{Ag}};
-		\tikzset{%
-			every node/.style={font=\usebeamerfont{page number in head/foot}\usebeamercolor[fg]{block title}},
-			every node/.append style={baseline=(footerbaseline.base)},
-			iteml/.style={anchor=base west, xshift=1ex},
-			itemm/.style={anchor=base},
-			itemr/.style={anchor=base east, xshift=-1ex},
-		};
-		\def\drawfooter{%
-			\begin{scope}[every node/.append style={yshift=0.9em}]
-			\usebeamertemplate{frame footer}
-			\node[itemr] (footeritemr) at (current page.south east) {\usebeamertemplate{frame numbering}};
-			\end{scope}
-		}%
-		\drawfooter%
-	\end{tikzpicture}
+  \begin{beamercolorbox}[wd=\textwidth, sep=1.3ex]{footline}%
+    \usebeamerfont{page number in head/foot}%
+    \usebeamertemplate*{frame footer}
+    \hfill%
+    \parbox{.1\framewidth}{\hfill\usebeamertemplate*{frame numbering}}
   \end{beamercolorbox}%
 }
-\long\def\ifnodedefined#1#2#3{%
-    \@ifundefined{pgf@sh@ns@#1}{#3}{#2}%
-}
 \defbeamertemplate{footline}{standout}{%
-	\begin{tikzpicture}[overlay]
-		\def\insertshortsection{\insertsectionhead}
-		\node[anchor=south] (footerbaseline) at (current page.south) {\vphantom{Ag}};
-		\tikzset{%
-			every node/.style={font=\usebeamerfont{page number in head/foot}\usebeamercolor[bg]{block title}},
-			every node/.append style={baseline=(footerbaseline.base)},
-			iteml/.style={anchor=base west, xshift=1ex},
-			itemm/.style={anchor=base},
-			itemr/.style={anchor=base east, xshift=-1ex},
-		};
-		\def\drawfooter{%
-			\begin{scope}[every node/.append style={yshift=0.9em}]
-			\usebeamertemplate{frame footer}
-			\node[itemr] (footeritemr) at (current page.south east) {\usebeamertemplate{frame numbering}};
-			\end{scope}
-			\ifnodedefined{footeritemm}{%
-				\node[fit=(footeriteml)(footeritemm)(footeritemr)] (footer) {};
-			}{%
-				\node[fit=(footeriteml)(footeritemr)] (footer) {};
-			}
-		}%
-		\phantom{\drawfooter}%
-		\path[fill={block title.fg}] (current page.south west) rectangle (footer.north -| current page.east);
-		\drawfooter%
-	\end{tikzpicture}
+  \begin{beamercolorbox}[wd=\textwidth, sep=1.3ex]{palette primary}%
+    \usebeamerfont{page number in head/foot}%
+    \usebeamertemplate*{frame footer}
+    \hfill%
+    \parbox{.1\framewidth}{\hfill\usebeamertemplate*{frame numbering}}
+  \end{beamercolorbox}%
 }
 %    \end{macrocode}
 % \end{macro}

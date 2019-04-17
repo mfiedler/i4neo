@@ -1,5 +1,7 @@
+image: docker:stable
+
 before_script:
-  - apt-get update -qq && apt-get install -y -qq curl
+  - apk add --update --no-cache curl && rm -rf /var/cache/apk/*
 
 build_demo:
   script:

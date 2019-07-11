@@ -5,6 +5,8 @@ FONTS_DIR   = $(LOCAL_DIR)/fonts
 CACHE_DIR   = $(LOCAL_DIR)/.latex-cache
 PDFPC_SIZE  = 40000
 
+PANDOC_TEMPLATE = $(LOCAL_DIR)/markdown.beamer
+
 PACKAGE_SRC = $(wildcard $(PACKAGE_DIR)/*.dtx)
 PACKAGE_STY = $(notdir $(PACKAGE_SRC:%.dtx=%.sty))
 PACKAGE_TGT = $(addprefix $(LOCAL_DIR)/,$(PACKAGE_STY))
@@ -45,12 +47,14 @@ $(CACHE_DIR):; @mkdir -p $(CACHE_DIR)
 	@cp $(CACHE_DIR)/$(notdir $*_handout.synctex.gz) $*_handout.synctex.gz
 	@test ! -f $@pc -a -f $(CACHE_DIR)/$(notdir $@)pc && ( /bin/echo "[file]"; /bin/echo "$@"; /bin/echo "[font_size]"; /bin/echo "$(PDFPC_SIZE)"; cat $(CACHE_DIR)/$(notdir $@)pc | sed 's/\\\\/\n/g' | sed 's/\\par/\n\n/g' ) > $@pc || echo "ignoring PDFPC file" && exit 0
 
-
 %.pdf: %.tex $(wildcard *.bib) $(PACKAGE_TGT) $(CACHE_DIR)
 	@cd $(dir $< ) && $(COMPILE_TEX) $(notdir $<)
 	@cp $(CACHE_DIR)/$(notdir $@) $@
 	@cp $(CACHE_DIR)/$(notdir $*.synctex.gz) $*.synctex.gz
 	@test ! -f $@pc -a -f $(CACHE_DIR)/$(notdir $@)pc && ( /bin/echo "[file]"; /bin/echo "$@"; /bin/echo "[font_size]"; /bin/echo "$(PDFPC_SIZE)"; cat $(CACHE_DIR)/$(notdir $@)pc | sed 's/\\\\/\n/g' | sed 's/\\par/\n\n/g' ) > $@pc || echo "ignoring PDFPC file" && exit 0
+
+%.tex: %.md $(PANDOC_TEMPLATE)
+	pandoc $< --natbib --slide-level=2 --to=beamer --template="$(PANDOC_TEMPLATE)" --to=beamer | sed -e "s/\\\\citep{/\\\\cite{/g" > $@
 
 preview-%: %.tex $(wildcard *.bib) $(PACKAGE_TGT) $(CACHE_DIR)
 	@cd $(dir $< ) && $(COMPILE_TEX) $(notdir $<) -pvc -interaction=nonstopmode -view=pdf

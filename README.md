@@ -1,9 +1,10 @@
 # i4neo Beamertheme
 
-**neo** soll ein einfacher und moderner Ersatz für das (optisch) bereits in die Jahre gekommene i4 Latex-Beamertheme werden.
-Ziel ist eine gemeinsame Vorlage sowohl für Vorlesungs- und Übungsfolien als auch für externe (Konferenz-)Präsentationen, ohne unnötige oder redundante Störelemente.
+**neo** ist ein einfacher und moderner Ersatz für das (optisch) bereits in die Jahre gekommene [i4 Latex-Beamertheme](https://gitlab.cs.fau.de/i4/tex/i4beamer).
+Ziel war eine gemeinsame Vorlage sowohl für Vorlesungs- und Übungsfolien als auch für externe (Konferenz-)Präsentationen, ohne unnötige oder redundante Störelemente.
 
 Die Vorlage ist eine Modifikation von [Matthias Vogelgesang](http://bloerg.net/2014/09/20/a-modern-beamer-theme.html)s [Metropolis](https://github.com/matze/mtheme) (auch als [CTAN-Paket](http://ctan.org/pkg/beamertheme-metropolis) verfügbar).
+
 
 ## Verwendung
 
@@ -24,7 +25,8 @@ Eine Makefile im Präsentationsordner kann dazu die entsprechende Theme-Makefile
 
     include theme/Makefile
 
-### Minimales Beispiel
+
+### Minimales Beispiel in LaTeX
 
 ```latex
 \documentclass{beamer}
@@ -44,9 +46,33 @@ Eine Makefile im Präsentationsordner kann dazu die entsprechende Theme-Makefile
 
 Weiterführende Informationen über die Verwendung der Vorlage sind in der [Dokumentation](doc/neotheme.pdf) zu finden.
 
+Ein ausführliches Beispiel wird in [i4neo Demo](https://gitlab.cs.fau.de/i4/tex/i4neo-demo) gezeigt.
+
+
+### Minimales Beispiel in Markdown
+
+Analog zum vorherigen Beispiel, hier wird jedoch die LaTeX aus Markdown mittels [Pandoc](https://pandoc.org/) generiert
+
+```markdown
+---
+title: Ein kleines Beispiel
+date: \today
+author: Wolfgang Händler
+institute: Friedrich-Alexander-Universität Erlangen-Nürnberg
+---
+
+# Erster Abschnitt
+
+## Erste Folie
+
+Hallo Welt
+```
+
+
 ## Hinweise
 
   * Die Verwendung von [XeTeX](https://de.wikipedia.org/wiki/XeTeX) wird wegen den besseren Schriftsatz der eingebetteten OpenType-[Fira-Schriftfamilie](http://mozilla.github.io/Fira/) empfohlen.
+
 
 ## Lizenz
 

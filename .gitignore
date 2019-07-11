@@ -39,3 +39,7 @@
 # Output
 
 *.sty
+
+# Documentation
+
+doc/neotheme.pdf

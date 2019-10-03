@@ -42,12 +42,16 @@ $(PACKAGE_TGT): $(wildcard $(PACKAGE_DIR)/*.ins) $(PACKAGE_SRC) | $(CACHE_DIR)
 $(CACHE_DIR):; @mkdir -p $(CACHE_DIR)
 
 %_handout.pdf: %.tex $(wildcard *.bib) $(PACKAGE_TGT) | $(CACHE_DIR)
+	@# touch pdf to ensure it is deleted on build failures
+	@test -f $@ && touch $@ || true
 	@cd $(dir $< ) && $(COMPILE_TEX) -jobname=$*_handout $(notdir $<)
 	@cp $(CACHE_DIR)/$(notdir $@) $@
 	@cp $(CACHE_DIR)/$(notdir $*_handout.synctex.gz) $*_handout.synctex.gz
 	@test ! -f $@pc -a -f $(CACHE_DIR)/$(notdir $@)pc && ( /bin/echo "[file]"; /bin/echo "$@"; /bin/echo "[font_size]"; /bin/echo "$(PDFPC_SIZE)"; cat $(CACHE_DIR)/$(notdir $@)pc | sed 's/\\\\/\n/g' | sed 's/\\par/\n\n/g' ) > $@pc || echo "ignoring PDFPC file" && exit 0
 
 %.pdf: %.tex $(wildcard *.bib) $(PACKAGE_TGT) | $(CACHE_DIR)
+	@# touch pdf to ensure it is deleted on build failures
+	@test -f $@ && touch $@ || true
 	@cd $(dir $< ) && $(COMPILE_TEX) $(notdir $<)
 	@cp $(CACHE_DIR)/$(notdir $@) $@
 	@cp $(CACHE_DIR)/$(notdir $*.synctex.gz) $*.synctex.gz
@@ -66,3 +70,4 @@ evince-%: %.pdf
 	@evince $<
 
 FORCE:
+.DELETE_ON_ERROR:

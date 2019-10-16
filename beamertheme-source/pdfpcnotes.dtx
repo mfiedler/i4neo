@@ -84,21 +84,22 @@
 
 % define command \pnote{} that works like note but
 % additionally writes notes to file in pdfpc readable format
-\newcommand{\pnote}[2][item]{%
+\newcommand<>{\pnote}[2][item]{%
 	% keep normal notes working
-	\note[#1]{#2}%
+	\note[#1]#3{#2}%
+	\only#3{%
+		% if frame changed - write a new header
+		\ifdim\thepage pt>\lastpage pt
+			\let\lastpage\thepage
+			\begingroup
+				\let\#\hashchar
+				\immediate\write\pdfpcnotesfile{\#\#\# \thepage}%
+			\endgroup
+		\fi
 
-	% if frame changed - write a new header
-	\ifdim\thepage pt>\lastpage pt
-		\let\lastpage\thepage
-		\begingroup
-			\let\#\hashchar
-			\immediate\write\pdfpcnotesfile{\#\#\# \thepage}%
-		\endgroup
-	\fi
-
-	% write note to file
-	\immediate\write\pdfpcnotesfile{\unexpanded{#2}}%
+		% write note to file
+		\immediate\write\pdfpcnotesfile{\unexpanded{#2}}%
+	}%
 }
 % close file on \begin{document}
 \AtEndDocument{%

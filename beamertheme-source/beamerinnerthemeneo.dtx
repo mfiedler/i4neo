@@ -151,18 +151,20 @@
     \titlepage
   \else
     {
-      \def\backgroundimg{images/titlepage-#1}
-      \ifdimcomp{\beamer@paperwidth}{=}{16.00cm}{\ifdimcomp{\beamer@paperheight}{=}{9.00cm}{%
-          % 16:9
-          \def\backgroundimg{images/titlepage-#1-highres-169}
-      }{}}{}
-      \usebackgroundtemplate{\includegraphics[width=\paperwidth]{\backgroundimg}}
+      \usebackgroundtemplate{
+        \tikzexternaldisable%
+        \begin{tikzpicture}
+          \node[anchor=north west,inner sep=0,outer sep=0] at (0, \paperheight) {\includegraphics[width=\paperwidth]{images/titlepage-#1}};
+          \fill[nWhite] (0,0) rectangle (\paperwidth, 0.3\paperheight);
+        \end{tikzpicture}%
+        \tikzexternalenable%
+      }
       \frame[plain,noframenumbering]{
         \neo@colors@dark
         \setbeamercolor{title separator}{
-  fg=black!20,
-  bg=normal text.fg
-}
+          fg=black!20,
+          bg=normal text.fg
+        }
         \titlepage
       }
     }

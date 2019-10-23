@@ -54,6 +54,7 @@
     .is choice,
     dark/.code=\neo@colors@dark,
     light/.code=\neo@colors@light,
+    white/.code=\neo@colors@white,
 }
 %    \end{macrocode}
 % \end{macro}
@@ -148,6 +149,16 @@
   \setbeamercolor{normal item}{%
     fg=nDarkBlue,
     bg=nWhite
+  }
+}
+\newcommand{\neo@colors@white}{
+  \setbeamercolor{normal text}{%
+    fg=nBlack,
+    bg=white
+  }
+  \setbeamercolor{normal item}{%
+    fg=nDarkBlue,
+    bg=white
   }
 }
 \setbeamercolor{alerted text}{%

@@ -47,13 +47,13 @@
 %
 % \begin{macro}{colors}
 %    Provides the option to have a dark background and light foreground instead
-%    of the reverse. White is similar to light but uses a pure white background.
+%    of the reverse.
 %    \begin{macrocode}
 \pgfkeys{
   /neo/color/background/.cd,
     .is choice,
     dark/.code=\neo@colors@dark,
-    light/.code=\neo@colors@bright,
+    light/.code=\neo@colors@light,
     white/.code=\neo@colors@white,
 }
 %    \end{macrocode}
@@ -141,7 +141,7 @@
   }
   \usebeamercolor[fg]{normal text}
 }
-\newcommand{\neo@colors@bright}{
+\newcommand{\neo@colors@light}{
   \setbeamercolor{normal text}{%
     fg=nBlack,
     bg=nWhite
@@ -150,9 +150,7 @@
     fg=nDarkBlue,
     bg=nWhite
   }
-  \renewcommand{\neo@colors@light}{\neo@colors@bright}
 }
-\newcommand{\neo@colors@light}{\neo@colors@bright}
 \newcommand{\neo@colors@white}{
   \setbeamercolor{normal text}{%
     fg=nBlack,
@@ -162,7 +160,6 @@
     fg=nDarkBlue,
     bg=white
   }
-  \renewcommand{\neo@colors@light}{\neo@colors@white}
 }
 \setbeamercolor{alerted text}{%
   fg=nDarkRed

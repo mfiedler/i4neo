@@ -43,9 +43,9 @@ $(CACHE_DIR):; @mkdir -p $(CACHE_DIR)
 
 %_handout.pdf %.pdf: %.tex $(wildcard *.bib) $(PACKAGE_TGT) FORCE | $(CACHE_DIR)
 	@test -f $@ && touch $@ || true
-	@cd $(dir $< ) && $(COMPILE_TEX) -jobname=$(basename $@) $(notdir $<)
+	@cd $(dir $< ) && $(COMPILE_TEX) -jobname=$(basename $(notdir $@)) $(notdir $<)
 	@cp $(CACHE_DIR)/$(notdir $@) $@
-	@cp $(CACHE_DIR)/$(notdir $(basename $@).synctex.gz) $(basename $@).synctex.gz
+	@cp $(CACHE_DIR)/$(notdir $(basename $(notdir $@)).synctex.gz) $(basename $(notdir $@)).synctex.gz
 	@test ! -f $@pc -a -f $(CACHE_DIR)/$(notdir $@)pc && ( /bin/echo "[file]"; /bin/echo "$@"; /bin/echo "[font_size]"; /bin/echo "$(PDFPC_SIZE)"; cat $(CACHE_DIR)/$(notdir $@)pc | sed 's/\\\\/\n/g' | sed 's/\\par/\n\n/g' ) > $@pc || echo "ignoring PDFPC file" && exit 0
 
 %.tex: %.md $(PANDOC_TEMPLATE)

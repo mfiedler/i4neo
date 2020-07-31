@@ -4,7 +4,7 @@ DOC_DIR     = $(LOCAL_DIR)/doc
 FONTS_DIR   = $(LOCAL_DIR)/fonts
 CACHE_DIR   = $(LOCAL_DIR)/.latex-cache
 PDFPC_SIZE  = 40000
-GS_QUALITY  = ebook
+GS_QUALITY ?= ebook
 
 PANDOC_TEMPLATE = $(LOCAL_DIR)/markdown.beamer
 

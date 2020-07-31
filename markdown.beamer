@@ -5,6 +5,8 @@ $if(colorlinks)$
 $endif$$if(dir)$$if(latex-dir-rtl)$
 \PassOptionsToPackage{RTLdocument}{bidi}
 $endif$$endif$%
+\RequirePackage{substr}
+\IfSubStringInString{\detokenize{_handout}}{\jobname}{\PassOptionsToClass{handout}{beamer}}{}
 \documentclass[$if(fontsize)$$fontsize$,$endif$$if(lang)$$babel-lang$,$endif$$if(papersize)$$papersize$paper,$endif$$if(beamer)$$if(handout)$handout,$endif$$if(aspectratio)$aspectratio=$aspectratio$,$endif$$endif$$for(classoption)$$classoption$$sep$,$endfor$]{$documentclass$}
 $if(beamer)$
 $if(background-image)$
@@ -283,7 +285,15 @@ $if(dir)$
   \newenvironment{LTR}{\beginL}{\endL}
 \fi
 $endif$
-
+\IfSubStringInString{\detokenize{_2x2}}{\jobname}{
+	\pgfpagesuselayout{4 on 1}[letterpaper,landscape,border shrink=2.5mm]
+	\neoset{background=white}
+}{
+	\IfSubStringInString{\detokenize{_1x2}}{\jobname}{
+		\pgfpagesuselayout{2 on 1}[letterpaper,border shrink=5mm]
+		\neoset{background=white}
+	}{}
+}
 $if(title)$
 \title{$title$$if(thanks)$\thanks{$thanks$}$endif$}
 $endif$

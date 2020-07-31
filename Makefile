@@ -28,6 +28,7 @@ all: sty doc
 sty: $(PACKAGE_TGT)
 
 doc: $(DOC_PDF)
+	@cd $(dir $<) && git update-index --assume-unchanged $(notdir $<) || true
 
 clean::
 	@rm -rf "$(CACHE_DIR)"

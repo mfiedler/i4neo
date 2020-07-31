@@ -60,5 +60,21 @@ pdfpc-%: %.pdf
 evince-%: %.pdf
 	@evince $<
 
+help::
+	@echo
+	@echo "Useful i4neo targets:"
+	@echo
+	@echo "	[FILE].pdf          Generate PDF from Latex Beamer ([FILE].tex)"
+	@echo "	                    or Markdown ([FILE].md) with Pandoc Beamer flavour"
+	@echo "	preview-[FILE]      Live preview with automatic rebuild on change"
+	@echo "	pdfpc-[FILE]        Start PDFPC presentation"
+	@echo "	evince-[FILE]       Open PDF in Evince viewer"
+	@echo "	[FILE]_handout.pdf  Generate handout version of presentation"
+	@echo "	[FILE]_1x2.pdf      Generate printable version with two slides per page"
+	@echo "	[FILE]_2x2.pdf      Generate printable version with four slides per page"
+	@echo
+	@echo "Source at https://gitlab.cs.fau.de/i4/tex/i4neo"
+	@echo
+
 FORCE:
 .DELETE_ON_ERROR:

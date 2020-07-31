@@ -4,6 +4,7 @@ DOC_DIR     = $(LOCAL_DIR)/doc
 FONTS_DIR   = $(LOCAL_DIR)/fonts
 CACHE_DIR   = $(LOCAL_DIR)/.latex-cache
 PDFPC_SIZE  = 40000
+GS_QUALITY  = ebook
 
 PANDOC_TEMPLATE = $(LOCAL_DIR)/markdown.beamer
 
@@ -49,7 +50,11 @@ $(CACHE_DIR):; @mkdir -p $(CACHE_DIR)
 	@test ! -f $@pc -a -f $(CACHE_DIR)/$(notdir $@)pc && ( /bin/echo "[file]"; /bin/echo "$@"; /bin/echo "[font_size]"; /bin/echo "$(PDFPC_SIZE)"; cat $(CACHE_DIR)/$(notdir $@)pc | sed 's/\\\\/\n/g' | sed 's/\\par/\n\n/g' ) > $@pc || echo "ignoring PDFPC file" && exit 0
 
 %.tex: %.md $(PANDOC_TEMPLATE)
-	pandoc $< --natbib --slide-level=2 --to=beamer --template="$(PANDOC_TEMPLATE)" --to=beamer | sed -e "s/\\\\citep{/\\\\cite{/g" > $@
+	@pandoc $< --natbib --slide-level=2 --to=beamer --template="$(PANDOC_TEMPLATE)" --to=beamer | sed -e "s/\\\\citep{/\\\\cite{/g" > $@
+
+%_web.pdf: %.pdf
+	@ghostscript -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/$(GS_QUALITY) -dDetectDuplicateImages=true -dFastWebView -dNOPAUSE -dQUIET -dBATCH -sOutputFile=$@ $<
+
 
 preview-%: %.tex $(wildcard *.bib) $(PACKAGE_TGT) | $(CACHE_DIR)
 	@cd $(dir $< ) && $(COMPILE_TEX) $(notdir $<) -pvc -interaction=nonstopmode -view=pdf
@@ -72,6 +77,9 @@ help::
 	@echo "	[FILE]_handout.pdf  Generate handout version of presentation"
 	@echo "	[FILE]_1x2.pdf      Generate printable version with two slides per page"
 	@echo "	[FILE]_2x2.pdf      Generate printable version with four slides per page"
+	@echo "	[FILE]_web.pdf      Generate a compressed version for web"
+	@echo
+	@echo "Concatenation is supported: [FILE]_handout_2x2_web.pdf"
 	@echo
 	@echo "Source at https://gitlab.cs.fau.de/i4/tex/i4neo"
 	@echo

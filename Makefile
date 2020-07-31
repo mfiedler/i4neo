@@ -23,12 +23,11 @@ export TEXINPUTS:=$(LOCAL_DIR):$(FONTS_DIR):$(shell pwd):$(PACKAGE_DIR):${TEXINP
 
 .INTERMEDIATE: %.pdfpc
 
-all: sty doc
+all: sty
 
 sty: $(PACKAGE_TGT)
 
 doc: $(DOC_PDF)
-	@cd $(dir $<) && git update-index --assume-unchanged $(notdir $<) || true
 
 clean::
 	@rm -rf "$(CACHE_DIR)"

@@ -281,7 +281,11 @@
     ]{frametitle}%
   \neo@frametitlestrut@start%
   \insertframetitle%
-  \usebeamertemplate*{frametitle icon}%
+  \ifx\insertframesubtitle\@empty
+    \usebeamertemplate*{frametitle icon}%
+  \else
+    \hfill{\usebeamerfont{framesubtitle}\insertframesubtitle}%
+  \fi
   \nolinebreak%
   \neo@frametitlestrut@end%
   \end{beamercolorbox}%
@@ -384,7 +388,11 @@
     \usebeamerfont{frametitle}%
     \neo@frametitlestrut@start%
     \insertframetitle%
-    \usebeamertemplate*{frametitle icon}%
+    \ifx\insertframesubtitle\@empty
+      \usebeamertemplate*{frametitle icon}%
+    \else
+      \hfill{\usebeamerfont{framesubtitle}\insertframesubtitle}%
+    \fi
     \nolinebreak%
     \neo@frametitlestrut@end%
   \end{beamercolorbox}%

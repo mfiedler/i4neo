@@ -55,6 +55,8 @@ $(CACHE_DIR):; @mkdir -p $(CACHE_DIR)
 %_web.pdf: %.pdf
 	@ghostscript -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/$(GS_QUALITY) -dDetectDuplicateImages=true -dFastWebView -dNOPAUSE -dQUIET -dBATCH -sOutputFile=$@ $<
 
+%_bbb.pdf: %.pdf
+	@ghostscript -dNoOutputFonts -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/$(GS_QUALITY) -dFastWebView -dNOPAUSE -dQUIET -dBATCH -sOutputFile=$@ $<
 
 preview-%: %.tex $(wildcard *.bib) $(PACKAGE_TGT) | $(CACHE_DIR)
 	@cd $(dir $< ) && $(COMPILE_TEX) $(notdir $<) -pvc -interaction=nonstopmode -view=pdf
@@ -78,6 +80,7 @@ help::
 	@echo "	[FILE]_1x2.pdf      Generate printable version with two slides per page"
 	@echo "	[FILE]_2x2.pdf      Generate printable version with four slides per page"
 	@echo "	[FILE]_web.pdf      Generate a compressed version for web"
+	@echo "	[FILE]_bbb.pdf      Generate a version to be uploaded in BigBlueButton"
 	@echo
 	@echo "Concatenation is supported: [FILE]_handout_2x2_web.pdf"
 	@echo

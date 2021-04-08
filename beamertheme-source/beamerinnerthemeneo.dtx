@@ -359,7 +359,7 @@
 \newlength{\neo@progressonsectionpage@linewidth}
 \setlength{\neo@progressonsectionpage@linewidth}{0.4pt}
 \setbeamertemplate{progress bar in section page}{
-  \pgfmathsetlength{\neo@progressonsectionpage}{\textwidth * min(1,\insertframenumber/\inserttotalframenumber}%
+  \pgfmathsetlength{\neo@progressonsectionpage}{\textwidth * min(1,\insertframenumber/max(1,\inserttotalframenumber)}%
   \tikzexternaldisable%
   \begin{tikzpicture}
     \fill[bg] (0,0) rectangle (\textwidth, \neo@progressonsectionpage@linewidth);

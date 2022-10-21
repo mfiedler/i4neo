@@ -60,7 +60,7 @@ preview-%: %.tex $(wildcard *.bib) $(PACKAGE_TGT) | $(CACHE_DIR)
 	@cd $(dir $< ) && $(COMPILE_TEX) $(notdir $<) -pvc -interaction=nonstopmode -view=pdf
 
 pdfpc-%: %.pdf
-	@pdfpc -g -p -C $<
+	@pdfpc -g -C $<
 
 evince-%: %.pdf
 	@evince $<

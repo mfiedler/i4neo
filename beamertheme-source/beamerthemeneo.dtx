@@ -177,11 +177,12 @@
 %    \end{macrocode}
 %
 % The |tol| theme for |pgfplots| is only loaded if |pgfplots| is used,
-% pdfpcnotes always
+% pdfpc always
 %
 %    \begin{macrocode}
 \AtEndPreamble{%
-  \RequirePackage{pdfpcnotes}
+  \RequirePackage{pdfpc}
+  \providecommand{\pnote}{\pdfpcnote}
   \@ifpackageloaded{pgfplots}{%
     \RequirePackage{pgfplotsthemetol}
   }{}

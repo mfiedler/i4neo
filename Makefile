@@ -39,8 +39,8 @@ mrproper:: clean
 	@rm -f $(PACKAGE_TGT) $(DOC_PDF) $(patsubst %.tex,%.pdfpc,$(wildcard $(DOC_DIR)/*.tex))
 
 $(PACKAGE_TGT): $(wildcard $(PACKAGE_DIR)/*.ins) $(PACKAGE_SRC) | $(CACHE_DIR)
-	@cd $(PACKAGE_DIR) && latex -output-directory=$(CACHE_DIR) $(notdir $<)
-	@cp $(addprefix $(CACHE_DIR)/,$(PACKAGE_STY)) $(LOCAL_DIR)/
+	@cd $(PACKAGE_DIR) && flock $(CACHE_DIR) latex -output-directory=$(CACHE_DIR) $(notdir $<)
+	@flock $(LOCAL_DIR) cp $(addprefix $(CACHE_DIR)/,$(PACKAGE_STY)) $(LOCAL_DIR)/
 
 $(CACHE_DIR):; @mkdir -p $(CACHE_DIR)
 

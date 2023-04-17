@@ -137,6 +137,33 @@
 \providecommand{\tikzexternaldisable}{}
 %    \end{macrocode}
 %
+% Neo is derived from metropolis, and does very, very nasty things, like using
+% patchcmd all over the place. It also tries to patch \verb!\beamer@@frametitle!, and
+% is unhappy if it does not find an outdated implementation there. At the same
+% time, the people developing beamer must be saints, because they included some
+% workaround in their library, just to keep this stupid shit working.
+% Otherwise, builds (from TexLive 2023 onwards) fail with:
+%
+% \begin{verbatim}
+%   ! Package beamerfontthemeneo Error: Patching frame title failed.
+% \end{verbatim}
+%
+% (See also: https://github.com/josephwright/beamer/issues/802)
+% However, their workaround specifically targets the filename
+% 'beamerfontthememetropolis.sty', but someone(TM) thought it to be wise to
+% rename the theme and all filenames and commands, so it does not trigger.
+% And this is how we have come to this beauty:
+%    \begin{macrocode}
+\@ifclasslater{beamer}{2023/02/20}{%
+	% The hooks where first defined for v3.69
+	\AddToHook{file/beamerfontthemeneo.sty/before}{\UseHook{file/beamerfontthememetropolis.sty/before}}
+	\AddToHook{file/beamerfontthemeneo.sty/after}{%
+		\let\metropolis@frametitleformat\neo@frametitleformat
+		\UseHook{file/beamerfontthememetropolis.sty/after}
+	}
+}{}
+%    \end{macrocode}
+%
 % \subsubsection{Component sub-packages}
 %
 % Having processed the options, we can now load the component sub-packages of

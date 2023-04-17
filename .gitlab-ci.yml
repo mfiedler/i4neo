@@ -24,15 +24,6 @@ neoDocker:
   extends: .build
   image: inf4/neo
 
-# Latest AlmaLinux
-almalinuxLatest:
-  extends: .build
-  image: almalinux:latest
-  before_script:
-    - dnf install -y epel-release yum-utils
-    - dnf config-manager --enable epel --set-enabled powertools
-    - dnf install -y make git pandoc texlive-xetex latexmk
-
 # ArchLinux rolling
 archlinuxLatest:
   extends: .build

@@ -3,7 +3,6 @@ PACKAGE_DIR = $(LOCAL_DIR)/beamertheme-source
 DOC_DIR     = $(LOCAL_DIR)/doc
 FONTS_DIR   = $(LOCAL_DIR)/fonts
 CACHE_DIR   = $(LOCAL_DIR)/.latex-cache
-PDFPC_SIZE  = 40000
 GS_QUALITY ?= ebook
 
 PANDOC_TEMPLATE = $(LOCAL_DIR)/markdown.beamer
@@ -24,8 +23,6 @@ export TEXINPUTS:=$(LOCAL_DIR):$(FONTS_DIR):$(shell pwd):$(PACKAGE_DIR):${TEXINP
 
 .PHONY: all sty doc clean mrproper
 
-.INTERMEDIATE: %.pdfpc
-
 all: sty
 
 sty: $(PACKAGE_TGT)
@@ -36,7 +33,7 @@ clean::
 	@rm -rf "$(CACHE_DIR)"
 
 mrproper:: clean
-	@rm -f $(PACKAGE_TGT) $(DOC_PDF) $(patsubst %.tex,%.pdfpc,$(wildcard $(DOC_DIR)/*.tex))
+	@rm -f $(PACKAGE_TGT) $(DOC_PDF) $(patsubst %.tex,$(wildcard $(DOC_DIR)/*.tex))
 
 $(PACKAGE_TGT): $(wildcard $(PACKAGE_DIR)/*.ins) $(PACKAGE_SRC) | $(CACHE_DIR)
 	@cd $(PACKAGE_DIR) && flock $(CACHE_DIR) latex -output-directory=$(CACHE_DIR) $(notdir $<)
@@ -49,7 +46,6 @@ $(CACHE_DIR):; @mkdir -p $(CACHE_DIR)
 	@cd $(dir $< ) && $(COMPILE_TEX) -jobname=$(basename $(notdir $@)) $(notdir $<)
 	@cp $(CACHE_DIR)/$(notdir $@) $@
 	@cp $(CACHE_DIR)/$(notdir $(basename $(notdir $@)).synctex.gz) $(basename $(notdir $@)).synctex.gz
-	@test ! -f $@pc -a -f $(CACHE_DIR)/$(notdir $@)pc && ( /bin/echo "[file]"; /bin/echo "$@"; /bin/echo "[font_size]"; /bin/echo "$(PDFPC_SIZE)"; cat $(CACHE_DIR)/$(notdir $@)pc | sed 's/\\\\/\n/g' | sed 's/\\par/\n\n/g' ) > $@pc || echo "ignoring PDFPC file" && exit 0
 
 %.tex: %.md $(PANDOC_TEMPLATE)
 	@pandoc $< --natbib --slide-level=2 --to=beamer --template="$(PANDOC_TEMPLATE)" --to=beamer | sed -e "s/\\\\citep{/\\\\cite{/g" > $@
@@ -64,7 +60,7 @@ preview-%: %.tex $(wildcard *.bib) $(PACKAGE_TGT) | $(CACHE_DIR)
 	@cd $(dir $< ) && $(COMPILE_TEX) $(notdir $<) -pvc -interaction=nonstopmode -view=pdf
 
 pdfpc-%: %.pdf
-	@pdfpc -g -p -C $<
+	@pdfpc -g -C $<
 
 evince-%: %.pdf
 	@evince $<

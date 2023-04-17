@@ -317,7 +317,7 @@
 \setlength{\neo@progressinheadfoot@linewidth}{0.8pt}
 \setbeamertemplate{progress bar in head/foot}{
   \nointerlineskip
-  \pgfmathsetlength{\neo@progressinheadfoot}{\paperwidth * min(1,\insertframenumber/\inserttotalframenumber}%
+  \pgfmathsetlength{\neo@progressinheadfoot}{\paperwidth * min(1,\insertframenumber/max(1,\inserttotalframenumber)}%
   \begin{beamercolorbox}[wd=\paperwidth]{progress bar in head/foot}
     \tikzexternaldisable%
     \begin{tikzpicture}

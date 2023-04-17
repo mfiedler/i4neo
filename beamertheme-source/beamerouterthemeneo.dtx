@@ -104,6 +104,7 @@
     author title/.code=\setbeamertemplate{frame footer}[author title],
     title/.code=\setbeamertemplate{frame footer}[title],
     title section/.code=\setbeamertemplate{frame footer}[title section],
+    title section subsection/.code=\setbeamertemplate{frame footer}[title section subsection],
 }
 %    \end{macrocode}
 % \end{macro}
@@ -212,6 +213,13 @@
   \insertshorttitle%
   \hfill%
   \insertsection%
+  \hfill%
+}
+\defbeamertemplate{frame footer}{title section subsection}{
+  \insertshorttitle%
+  \hfill%
+  \insertsection%
+  \ifx\insertsubsection\@empty\else\ -- \insertsubsection\fi%%
   \hfill%
 }
 \defbeamertemplate{frame footer}{custom}[1]{ #1 }

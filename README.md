@@ -46,7 +46,7 @@ Eine Makefile im Präsentationsordner kann dazu die entsprechende Theme-Makefile
 
 Weiterführende Informationen über die Verwendung der Vorlage sind in der [Dokumentation](doc/neotheme.pdf) zu finden.
 
-Ein ausführliches Beispiel wird in [i4neo Demo](https://gitlab.cs.fau.de/i4/tex/i4neo-demo) gezeigt.
+Ein ausführliches Beispiel wird in [i4neo Demo](https://gitlab.cs.fau.de/i4/tex/i4neo-demo) gezeigt, während [i4neo Talk](https://gitlab.cs.fau.de/i4/tex/i4neo-talk) eine komfortable [Vorlage](https://gitlab.cs.fau.de/i4/tex/i4neo-talk/-/forks/new) für eigene Vortragspräsentationen bietet.
 
 
 ### Minimales Beispiel in Markdown

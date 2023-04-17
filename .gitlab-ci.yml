@@ -1,8 +1,81 @@
-image: docker:stable
-
-before_script:
-  - apk add --update --no-cache curl && rm -rf /var/cache/apk/*
-
-build_demo:
+# This CI will build i4neo-demo with the current version on several popular distributions
+.build:
+  variables:
+    DEMO: "i4neo-demo"
+    DEMO_DIR: "${CI_BUILDS_DIR}/${CI_PROJECT_NAMESPACE}/${DEMO}"
+    DEMO_GIT: "https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_NAMESPACE}/${DEMO}.git"
   script:
-    - "curl -X POST -F token=dfdc8811b291493d39a7fb7929641e -F ref=master https://gitlab.cs.fau.de/api/v4/projects/2380/trigger/pipeline"
+    - rm -rf ${DEMO_DIR}
+    - git clone ${DEMO_GIT} ${DEMO_DIR}
+    - rmdir ${DEMO_DIR}/theme
+    - ln -s $(pwd) ${DEMO_DIR}/theme
+    - test -f /etc/os-release && source /etc/os-release && echo ${NAME:-} ${VERSION:-} || true
+    - make -C ${DEMO_DIR} demo
+    - cp ${DEMO_DIR}/*.pdf* .
+  artifacts:
+    paths:
+      - demo.pdf
+      - demo.pdfpc
+      - example.pdf
+      - example.pdfpc
+
+# Our own neo docker image
+neoDocker:
+  extends: .build
+  image: inf4/neo
+
+# Latest AlmaLinux
+almalinuxLatest:
+  extends: .build
+  image: almalinux:latest
+  before_script:
+    - dnf install -y epel-release yum-utils
+    - dnf config-manager --enable epel --set-enabled powertools
+    - dnf install -y make git pandoc texlive-xetex latexmk
+
+# ArchLinux rolling
+archlinuxLatest:
+  extends: .build
+  image: archlinux:latest
+  before_script:
+    - pacman -Syu --noconfirm git make texlive-most pandoc
+
+fedoraLatest:
+  extends: .build
+  image: fedora:latest
+  before_script:
+   - dnf install -y make git pandoc texlive-scheme-full latexmk
+
+# Generic rules for debian based distributions
+.debianoide:
+  extends: .build
+  before_script:
+    - ln -fs /usr/share/zoneinfo/Europe/Berlin /etc/localtime
+    - export DEBIAN_FRONTEND=noninteractive
+    - apt-get update -qq && apt-get install -y -qq eatmydata && eatmydata apt-get install -y -qq make git texlive-full latexmk pandoc
+
+# Latest Ubuntu LTS Release
+ubuntuLatest:
+  extends: .debianoide
+  image: ubuntu:latest
+
+# Latest (rolling) Ubuntu Release
+ubuntuRolling:
+  extends: .debianoide
+  image: ubuntu:rolling
+
+# Current stable Debian Release
+debianStable:
+  extends: .debianoide
+  image: debian:stable
+
+# Development version of Debian
+debianTesting:
+  extends: .debianoide
+  image: debian:testing
+
+# Previous stable Debian Release
+debianOldStable:
+  extends: .debianoide
+  image: debian:oldstable
+

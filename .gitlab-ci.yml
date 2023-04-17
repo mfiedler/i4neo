@@ -11,13 +11,11 @@
     - ln -s $(pwd) ${DEMO_DIR}/theme
     - test -f /etc/os-release && source /etc/os-release && echo ${NAME:-} ${VERSION:-} || true
     - make -C ${DEMO_DIR} demo
-    - cp ${DEMO_DIR}/*.pdf* .
+    - cp ${DEMO_DIR}/*.pdf .
   artifacts:
     paths:
       - demo.pdf
-      - demo.pdfpc
       - example.pdf
-      - example.pdfpc
 
 # Our own neo docker image
 neoDocker:

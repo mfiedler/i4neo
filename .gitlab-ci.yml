@@ -1,47 +1,133 @@
 # This CI will build i4neo-demo with the current version on several popular distributions
-.build:
+
+stages:
+  - basic-talk
+  - basic-demo
+  - distribution-demo
+
+
+# Configuration of the i4neo-talk project
+.config-talk:
   variables:
-    DEMO: "i4neo-demo"
-    DEMO_DIR: "${CI_BUILDS_DIR}/${CI_PROJECT_NAMESPACE}/${DEMO}"
-    DEMO_GIT: "https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_NAMESPACE}/${DEMO}.git"
+    PROJ: "i4neo-talk"
+    PROJ_DIR: "${CI_BUILDS_DIR}/${CI_PROJECT_NAMESPACE}/${PROJ}"
+    PROJ_GIT: "https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_NAMESPACE}/${PROJ}.git"
+
+# Configuration of the i4neo-demo project
+.config-demo:
+  variables:
+    PROJ: "i4neo-demo"
+    PROJ_DIR: "${CI_BUILDS_DIR}/${CI_PROJECT_NAMESPACE}/${PROJ}"
+    PROJ_GIT: "https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_NAMESPACE}/${PROJ}.git"
+
+
+# Clone and setup the demo project (using current theme version)
+.setup: &setup |
+  rm -rf ${PROJ_DIR}
+  git clone ${PROJ_GIT} ${PROJ_DIR}
+  rmdir ${PROJ_DIR}/theme
+  ln -s $(pwd) ${PROJ_DIR}/theme
+  test -f /etc/os-release && source /etc/os-release && echo ${NAME:-} ${VERSION:-} || true
+
+
+# Build
+.build:
   script:
-    - rm -rf ${DEMO_DIR}
-    - git clone ${DEMO_GIT} ${DEMO_DIR}
-    - rmdir ${DEMO_DIR}/theme
-    - ln -s $(pwd) ${DEMO_DIR}/theme
-    - test -f /etc/os-release && source /etc/os-release && echo ${NAME:-} ${VERSION:-} || true
-    - make -C ${DEMO_DIR} demo
-    - cp ${DEMO_DIR}/*.pdf .
+    - *setup
+    - make -C ${PROJ_DIR} all
+    - cp ${PROJ_DIR}/*.pdf .
   artifacts:
     paths:
-      - demo.pdf
-      - example.pdf
+      - "*.pdf"
+  retry: 2
 
-# Our own neo docker image
-neoDocker:
-  extends: .build
+
+
+# i4neo-talk using official texlive
+texlive-talk:
+  stage: basic-talk
+  extends:
+    - .config-talk
+    - .build
+  image: texlive/texlive
+
+# i4neo-demo using official texlive (no pandoc, build only demo.pdf)
+texlive-demo:
+  stage: basic-demo
+  extends:
+    - .config-demo
+    - .build
+  image: texlive/texlive
+  script:
+    - *setup
+    - make -C ${PROJ_DIR} demo.pdf
+    - cp ${PROJ_DIR}/demo.pdf .
+
+
+# i4neo-talk using our own neo docker image
+neoDocker-talk:
+  stage: basic-talk
+  extends:
+    - .config-talk
+    - .build
   image: inf4/neo
+
+# i4neo-demo using our own neo docker image
+neoDocker-demo:
+  stage: basic-demo
+  extends:
+    - .config-demo
+    - .build
+  image: inf4/neo
+
 
 # ArchLinux rolling
 archlinuxLatest:
-  extends: .build
+  stage: distribution-demo
+  extends:
+    - .config-demo
+    - .build
   image: archlinux:latest
   before_script:
     - pacman -Syu --noconfirm git make texlive-most pandoc
 
+# Fedora Latest
 fedoraLatest:
-  extends: .build
+  stage: distribution-demo
+  extends:
+    - .config-demo
+    - .build
   image: fedora:latest
   before_script:
    - dnf install -y make git pandoc texlive-scheme-full latexmk
 
+# Gentoo latest
+gentooLatest:
+  stage: distribution-demo
+  extends:
+    - .config-demo
+    - .build
+  image: gentoo/stage3:latest
+  before_script:
+    - emerge --sync >/dev/null
+    - export demopkg=( dev-vcs/git dev-tex/latexmk dev-texlive/texlive-xetex virtual/pandoc app-text/texlive dev-texlive/texlive-fontsrecommended dev-texlive/texlive-fontsextra )
+    - emerge --autounmask y --autounmask-write y -uDN ${demopkg[@]} || true
+    - yes | etc-update --automode -3 || true
+    - emerge -uDN ${demopkg[@]} >/dev/null || true
+  timeout: 6h
+
+
 # Generic rules for debian based distributions
 .debianoide:
-  extends: .build
+  stage: distribution-demo
+  extends:
+    - .config-demo
+    - .build
   before_script:
     - ln -fs /usr/share/zoneinfo/Europe/Berlin /etc/localtime
     - export DEBIAN_FRONTEND=noninteractive
     - apt-get update -qq && apt-get install -y -qq eatmydata && eatmydata apt-get install -y -qq make git texlive-full latexmk pandoc
+  timeout: 3h
 
 # Latest Ubuntu LTS Release
 ubuntuLatest:

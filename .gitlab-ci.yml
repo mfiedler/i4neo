@@ -3,7 +3,8 @@
 stages:
   - basic-talk
   - basic-demo
-  - distribution-demo
+  - dist-chair-demo
+  - dist-extra-demo
 
 
 # Configuration of the i4neo-talk project
@@ -28,6 +29,7 @@ stages:
   rmdir ${PROJ_DIR}/theme
   ln -s $(pwd) ${PROJ_DIR}/theme
   test -f /etc/os-release && source /etc/os-release && echo ${NAME:-} ${VERSION:-} || true
+  rm -f *.pdf || true
 
 
 # Build
@@ -83,7 +85,7 @@ neoDocker-demo:
 
 # ArchLinux rolling
 archlinuxLatest:
-  stage: distribution-demo
+  stage: dist-extra-demo
   extends:
     - .config-demo
     - .build
@@ -93,7 +95,7 @@ archlinuxLatest:
 
 # Fedora Latest
 fedoraLatest:
-  stage: distribution-demo
+  stage: dist-extra-demo
   extends:
     - .config-demo
     - .build
@@ -103,7 +105,7 @@ fedoraLatest:
 
 # Gentoo latest
 gentooLatest:
-  stage: distribution-demo
+  stage: dist-extra-demo
   extends:
     - .config-demo
     - .build
@@ -119,7 +121,7 @@ gentooLatest:
 
 # Generic rules for debian based distributions
 .debianoide:
-  stage: distribution-demo
+  stage: dist-chair-demo
   extends:
     - .config-demo
     - .build

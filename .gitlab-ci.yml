@@ -91,7 +91,7 @@ archlinuxLatest:
     - .build
   image: archlinux:latest
   before_script:
-    - pacman -Syu --noconfirm git make texlive-most pandoc
+    - pacman -Syu --noconfirm git make texlive-meta texlive-lang pandoc
 
 # Fedora Latest
 fedoraLatest:

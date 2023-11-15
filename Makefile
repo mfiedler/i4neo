@@ -41,7 +41,7 @@ $(PACKAGE_TGT): $(wildcard $(PACKAGE_DIR)/*.ins) $(PACKAGE_SRC) | $(CACHE_DIR)
 
 $(CACHE_DIR):; @mkdir -p $(CACHE_DIR)
 
-%_handout.pdf %_1x2.pdf %_2x2.pdf  %_handout_1x2.pdf %_handout_2x2.pdf %.pdf: %.tex $(wildcard *.bib) $(PACKAGE_TGT) FORCE | $(CACHE_DIR)
+%_website.pdf %_handout.pdf %_1x2.pdf %_2x2.pdf  %_handout_1x2.pdf %_handout_2x2.pdf %.pdf: %.tex $(wildcard *.bib) $(PACKAGE_TGT) FORCE | $(CACHE_DIR)
 	@test -f $@ && touch $@ || true
 	@cd $(dir $< ) && $(COMPILE_TEX) -jobname=$(basename $(notdir $@)) $(notdir $<)
 	@cp $(CACHE_DIR)/$(notdir $@) $@

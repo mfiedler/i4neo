@@ -19,7 +19,8 @@ LATEXMK_GEN ?= -xelatex
 # output directory restrictions in bibtex. see also https://tex.stackexchange.com/a/564691
 COMPILE_TEX  = latexmk $(LATEXMK_GEN) -output-directory=$(CACHE_DIR) --synctex=1 -e '$$bibtex_fudge=1'
 
-export TEXINPUTS:=$(LOCAL_DIR):$(FONTS_DIR):$(shell pwd):$(PACKAGE_DIR):${TEXINPUTS}
+export TEXINPUTS:=$(LOCAL_DIR):$(shell pwd):$(PACKAGE_DIR):${TEXINPUTS}
+export OPENTYPEFONTS:=$(FONTS_DIR):${OPENTYPEFONTS}
 
 .PHONY: all sty doc clean mrproper
 

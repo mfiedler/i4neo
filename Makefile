@@ -42,11 +42,19 @@ $(PACKAGE_TGT): $(wildcard $(PACKAGE_DIR)/*.ins) $(PACKAGE_SRC) | $(CACHE_DIR)
 
 $(CACHE_DIR):; @mkdir -p $(CACHE_DIR)
 
-%_website.pdf %_handout.pdf %_1x2.pdf %_2x2.pdf  %_handout_1x2.pdf %_handout_2x2.pdf %.pdf: %.tex $(wildcard *.bib) $(PACKAGE_TGT) FORCE | $(CACHE_DIR)
+define BUILD_PDF
 	@test -f $@ && touch $@ || true
 	@cd $(dir $< ) && $(COMPILE_TEX) -jobname=$(basename $(notdir $@)) $(notdir $<)
 	@cp $(CACHE_DIR)/$(notdir $@) $@
 	@cp $(CACHE_DIR)/$(notdir $(basename $(notdir $@)).synctex.gz) $(basename $(notdir $@)).synctex.gz
+endef
+
+%_handout.pdf: %.tex $(wildcard *.bib) $(PACKAGE_TGT) FORCE | $(CACHE_DIR) ; $(BUILD_PDF)
+%_1x2.pdf: %.tex $(wildcard *.bib) $(PACKAGE_TGT) FORCE | $(CACHE_DIR) ; $(BUILD_PDF)
+%_2x2.pdf: %.tex $(wildcard *.bib) $(PACKAGE_TGT) FORCE | $(CACHE_DIR) ; $(BUILD_PDF)
+%_handout_1x2.pdf: %.tex $(wildcard *.bib) $(PACKAGE_TGT) FORCE | $(CACHE_DIR) ; $(BUILD_PDF)
+%_handout_2x2.pdf: %.tex $(wildcard *.bib) $(PACKAGE_TGT) FORCE | $(CACHE_DIR) ; $(BUILD_PDF)
+%.pdf: %.tex $(wildcard *.bib) $(PACKAGE_TGT) FORCE | $(CACHE_DIR) ; $(BUILD_PDF)
 
 %.tex: %.md $(PANDOC_TEMPLATE)
 	@pandoc $< --natbib --slide-level=2 --to=beamer --template="$(PANDOC_TEMPLATE)" --to=beamer | sed -e "s/\\\\citep{/\\\\cite{/g" > $@

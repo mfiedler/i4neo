@@ -103,21 +103,6 @@ fedoraLatest:
   before_script:
    - dnf install -y make git pandoc texlive-scheme-full latexmk
 
-# Gentoo latest
-gentooLatest:
-  stage: dist-extra-demo
-  extends:
-    - .config-demo
-    - .build
-  image: gentoo/stage3:latest
-  before_script:
-    - emerge --sync >/dev/null
-    - export demopkg=( dev-vcs/git dev-tex/latexmk dev-texlive/texlive-xetex virtual/pandoc app-text/texlive dev-texlive/texlive-fontsrecommended dev-texlive/texlive-fontsextra )
-    - emerge --autounmask y --autounmask-write y -uDN ${demopkg[@]} || true
-    - yes | etc-update --automode -3 || true
-    - emerge -uDN ${demopkg[@]} >/dev/null || true
-  timeout: 6h
-
 
 # Generic rules for debian based distributions
 .debianoide:

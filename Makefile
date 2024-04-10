@@ -17,7 +17,7 @@ LATEXMK_GEN ?= -xelatex
 
 # bibtex_fudge must be set for latexmk 4.70a (included in Debian Bullseye) to workaround
 # output directory restrictions in bibtex. see also https://tex.stackexchange.com/a/564691
-COMPILE_TEX  = latexmk $(LATEXMK_GEN) -output-directory=$(CACHE_DIR) --synctex=1 -e '$$bibtex_fudge=1'
+COMPILE_TEX  = latexmk $(LATEXMK_GEN) -output-directory=$(CACHE_DIR) -aux-directory=$(CACHE_DIR) --synctex=1 -e '$$bibtex_fudge=1'
 
 export TEXINPUTS:=$(LOCAL_DIR):$(shell pwd):$(PACKAGE_DIR):${TEXINPUTS}
 export OPENTYPEFONTS:=$(FONTS_DIR):${OPENTYPEFONTS}

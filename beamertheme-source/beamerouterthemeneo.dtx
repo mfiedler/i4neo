@@ -69,25 +69,28 @@
 % \begin{macro}{notes}
 %    Show notes in presentation
 %    \begin{macrocode}
+\providebool{neo@pdfpcnotes}
 \pgfkeys{
   /neo/outer/notes/.cd,
     .is choice,
     none/.code=\pgfkeysalso{notes=hide},
-    hide/.code=\setbeameroption{hide notes},
-    show/.code={\setbeamertemplate{note page}[print]\setbeameroption{show notes}},
-    only/.code={\setbeamertemplate{note page}[print]\setbeameroption{show only notes}},
-    preview-left/.code={\setbeamertemplate{note page}[default]\setbeameroption{show notes on second screen=left}},
-    preview-right/.code={\setbeamertemplate{note page}[default]\setbeameroption{show notes on second screen=right}},
-    preview-top/.code={\setbeamertemplate{note page}[default]\setbeameroption{show notes on second screen=top}},
-    preview-bottom/.code={\setbeamertemplate{note page}[default]\setbeameroption{show notes on second screen=bottom}},
-    preview-left-big/.code={\setbeamertemplate{note page}[preview-big]\setbeameroption{show notes on second screen=left}},
-    preview-right-big/.code={\setbeamertemplate{note page}[preview-big]\setbeameroption{show notes on second screen=right}},
-    preview-top-big/.code={\setbeamertemplate{note page}[preview-big]\setbeameroption{show notes on second screen=top}},
-    preview-bottom-big/.code={\setbeamertemplate{note page}[preview-big]\setbeameroption{show notes on second screen=bottom}},
-    left/.code={\setbeamertemplate{note page}[print]\setbeameroption{show notes on second screen=left}},
-    right/.code={\setbeamertemplate{note page}[print]\setbeameroption{show notes on second screen=right}},
-    top/.code={\setbeamertemplate{note page}[print]\setbeameroption{show notes on second screen=top}},
-    bottom/.code={\setbeamertemplate{note page}[print]\setbeameroption{show notes on second screen=bottom}},
+    hide/.code={\boolfalse{neo@pdfpcnotes}\setbeameroption{hide notes}},
+    pdfpc/.code={\booltrue{neo@pdfpcnotes}\setbeameroption{hide notes}},
+    show/.code={\boolfalse{neo@pdfpcnotes}\setbeamertemplate{note page}[print]\setbeameroption{show notes}},
+    full/.code={\booltrue{neo@pdfpcnotes}\setbeamertemplate{note page}[print]\setbeameroption{show notes}},
+    only/.code={\boolfalse{neo@pdfpcnotes}\setbeamertemplate{note page}[print]\setbeameroption{show only notes}},
+    preview-left/.code={\boolfalse{neo@pdfpcnotes}\setbeamertemplate{note page}[default]\setbeameroption{show notes on second screen=left}},
+    preview-right/.code={\boolfalse{neo@pdfpcnotes}\setbeamertemplate{note page}[default]\setbeameroption{show notes on second screen=right}},
+    preview-top/.code={\boolfalse{neo@pdfpcnotes}\setbeamertemplate{note page}[default]\setbeameroption{show notes on second screen=top}},
+    preview-bottom/.code={\boolfalse{neo@pdfpcnotes}\setbeamertemplate{note page}[default]\setbeameroption{show notes on second screen=bottom}},
+    preview-left-big/.code={\boolfalse{neo@pdfpcnotes}\setbeamertemplate{note page}[preview-big]\setbeameroption{show notes on second screen=left}},
+    preview-right-big/.code={\boolfalse{neo@pdfpcnotes}\setbeamertemplate{note page}[preview-big]\setbeameroption{show notes on second screen=right}},
+    preview-top-big/.code={\boolfalse{neo@pdfpcnotes}\setbeamertemplate{note page}[preview-big]\setbeameroption{show notes on second screen=top}},
+    preview-bottom-big/.code={\boolfalse{neo@pdfpcnotes}\setbeamertemplate{note page}[preview-big]\setbeameroption{show notes on second screen=bottom}},
+    left/.code={\boolfalse{neo@pdfpcnotes}\setbeamertemplate{note page}[print]\setbeameroption{show notes on second screen=left}},
+    right/.code={\boolfalse{neo@pdfpcnotes}\setbeamertemplate{note page}[print]\setbeameroption{show notes on second screen=right}},
+    top/.code={\boolfalse{neo@pdfpcnotes}\setbeamertemplate{note page}[print]\setbeameroption{show notes on second screen=top}},
+    bottom/.code={\boolfalse{neo@pdfpcnotes}\setbeamertemplate{note page}[print]\setbeameroption{show notes on second screen=bottom}},
 }
 %    \end{macrocode}
 % \end{macro}

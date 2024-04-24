@@ -60,10 +60,10 @@ endef
 	@pandoc $< --natbib --slide-level=2 --to=beamer --template="$(PANDOC_TEMPLATE)" --to=beamer | sed -e "s/\\\\citep{/\\\\cite{/g" > $@
 
 %_web.pdf: %.pdf
-	@ghostscript -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/$(GS_QUALITY) -dDetectDuplicateImages=true -dFastWebView -dNOPAUSE -dQUIET -dBATCH -sOutputFile=$@ $<
+	@ghostscript -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/$(GS_QUALITY) -dDetectDuplicateImages=true -dFastWebView -dShowAnnots=false -dNOPAUSE -dQUIET -dBATCH -sOutputFile=$@ $<
 
 %_bbb.pdf: %.pdf
-	@ghostscript -dNoOutputFonts -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/$(GS_QUALITY) -dFastWebView -dNOPAUSE -dQUIET -dBATCH -sOutputFile=$@ $<
+	@ghostscript -dNoOutputFonts -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/$(GS_QUALITY) -dFastWebView -dShowAnnots=false -dNOPAUSE -dQUIET -dBATCH -sOutputFile=$@ $<
 
 preview-%: %.tex $(wildcard *.bib) $(PACKAGE_TGT) | $(CACHE_DIR)
 	@cd $(dir $< ) && $(COMPILE_TEX) $(notdir $<) -pvc -interaction=nonstopmode -view=pdf

@@ -91,6 +91,18 @@
 %    \end{macrocode}
 % \end{macro}
 %
+% \begin{macro}{hide section after toc}
+%    Optionally hide the first section slide after a table of contents.
+%    \begin{macrocode}
+\pgfkeys{
+  /neo/inner/sectionaftertoc/.cd,
+    .is choice,
+    hide/.code={\global\booltrue{neo@hidesectionaftertoc}},
+    show/.code={\global\boolfalse{neo@hidesectionaftertoc}},
+}
+%    \end{macrocode}
+% \end{macro}
+%
 % \begin{macro}{\neo@inner@setdefaults}
 % Set default values for inner theme options.
 %    \begin{macrocode}
@@ -99,6 +111,7 @@
     sectionpage=progressbar,
     subsectionpage=none,
     startsection=show,
+    sectionaftertoc=show,
   }
 }
 %    \end{macrocode}
@@ -320,6 +333,14 @@
 }
 
 \global\providebool{neo@hidestartsection}
+\global\providebool{neo@hidesectionaftertoc}
+\global\providebool{neo@tocprinted}
+\global\boolfalse{neo@tocprinted}
+\let\neo@oldtableofcontents\tableofcontents
+\renewcommand{\tableofcontents}{
+  \global\booltrue{neo@tocprinted}
+  \neo@oldtableofcontents
+}
 
 \newcommand{\neo@disablesectionpage}{
   \AtBeginSection{
@@ -337,6 +358,12 @@
         \ifnum\theframenumber=0
           \boolfalse{neo@printsection}
         \fi
+      }{}
+      \ifbool{neo@hidesectionaftertoc}{
+        \ifbool{neo@tocprinted}{%
+          \global\boolfalse{neo@tocprinted}
+          \boolfalse{neo@printsection}
+        }{}
       }{}
       \ifbool{neo@printsection}{
         \frame[plain,c,noframenumbering]{\sectionpage}

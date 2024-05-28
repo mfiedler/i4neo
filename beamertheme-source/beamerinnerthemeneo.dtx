@@ -79,13 +79,26 @@
 %    \end{macrocode}
 % \end{macro}
 %
+% \begin{macro}{hide start section}
+%    Optionally hide the first section slide right at the beginning of the talk.
+%    \begin{macrocode}
+\pgfkeys{
+  /neo/inner/startsection/.cd,
+    .is choice,
+    hide/.code={\global\booltrue{neo@hidestartsection}},
+    show/.code={\global\boolfalse{neo@hidestartsection}},
+}
+%    \end{macrocode}
+% \end{macro}
+%
 % \begin{macro}{\neo@inner@setdefaults}
 % Set default values for inner theme options.
 %    \begin{macrocode}
 \newcommand{\neo@inner@setdefaults}{
   \pgfkeys{/neo/inner/.cd,
     sectionpage=progressbar,
-    subsectionpage=none
+    subsectionpage=none,
+    startsection=show,
   }
 }
 %    \end{macrocode}
@@ -305,6 +318,9 @@
   \par
   \vspace{\baselineskip}
 }
+
+\global\providebool{neo@hidestartsection}
+
 \newcommand{\neo@disablesectionpage}{
   \AtBeginSection{
     % intentionally empty
@@ -315,7 +331,16 @@
     \ifbeamer@inframe
       \sectionpage
     \else
-      \frame[plain,c,noframenumbering]{\sectionpage}
+      \providebool{neo@printsection}
+      \booltrue{neo@printsection}
+      \ifbool{neo@hidestartsection}{
+        \ifnum\theframenumber=0
+          \boolfalse{neo@printsection}
+        \fi
+      }{}
+      \ifbool{neo@printsection}{
+        \frame[plain,c,noframenumbering]{\sectionpage}
+      }{}
     \fi
   }
 }
